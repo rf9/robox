@@ -1,10 +1,12 @@
 class FileData:
     class Entry:
         def __init__(self, key, slot, value, units):
-            self.key = key
-            self.slot = slot
             self.value = value
-            self.units = units
+            self.meta = {
+                "name": key,
+                "address": slot,
+                "units": units,
+            }
 
     def __init__(self):
         self.data = []
@@ -37,5 +39,5 @@ class FileData:
 
         return out
 
-    def add_entry(self, key, slot, value, units):
+    def add_entry_with_slot_and_units(self, key, slot, value, units):
         self.data.append(self.Entry(key, slot, value, units))

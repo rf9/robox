@@ -1,11 +1,11 @@
 from django.db import models
 
 
-# Create your models here.
 class File(models.Model):
     upload_time = models.DateTimeField(auto_now_add=True)
     barcode = models.CharField(max_length=50)
     file = models.FileField(upload_to="data/")
+    format = models.CharField(max_length=20)
 
 
 class Entry(models.Model):

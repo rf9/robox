@@ -1,25 +1,21 @@
 from robox.parsers.FileData import FileData
 
 
-def parse(file_path):
+def parse(file):
     try:
-        file = open(file_path)
-
         data = FileData()
 
         first = True
         for line in file:
+            cells = line.decode('ascii').replace("\n", "").split(",")
             if first:
-                line = [x for x in filter(None, line.replace("\n", "").split(","))]
-                if line != ['Plate Name', 'Well Label', 'Sample Name', 'Peak Count', 'Total Conc. (ng/ul)',
+                if [x for x in filter(None, cells)]\
+                        != ['Plate Name', 'Well Label', 'Sample Name', 'Peak Count', 'Total Conc. (ng/ul)',
                             'Region[200-700] Molarity (nmol/l)']:
                     return None
                 first = False
                 continue
 
-            line = line.replace("\n", "")
-
-            cells = line.split(",")
             slot = cells[2].split("_")[0]
             concentration = cells[5]
             dilution_parts = cells[2].split("_")[-2:]
@@ -30,9 +26,9 @@ def parse(file_path):
                 dilution = None
 
             if concentration:
-                data.add_entry("concentration", slot, concentration, "nM")
+                data.add_entry_with_slot_and_units("concentration", slot, concentration, "nM")
             if dilution:
-                data.add_entry("dilution", slot, dilution, "%")
+                data.add_entry_with_slot_and_units("dilution", slot, dilution, "%")
 
     except UnicodeDecodeError:
         return None

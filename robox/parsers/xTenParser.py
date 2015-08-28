@@ -22,6 +22,6 @@ def parse(file_path):
         slot = str(row[0].value) + str(row[1].value)
         concentration = row[4].value
 
-        data.add_entry("concentration", slot, concentration, "ng/ul")
+        data.add_entry_with_slot_and_units("concentration", slot, concentration, "ng/ul")
 
     return data
