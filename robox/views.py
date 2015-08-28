@@ -5,7 +5,7 @@ from django.views.generic import FormView
 
 from robox.forms import UploadForm
 from robox.models import File, Entry, MetaData
-from robox.parsers import iscParser, wgsParser, xTenParser
+from robox.parsers import get_parsers
 
 
 class UploadView(FormView):
@@ -17,11 +17,7 @@ class UploadView(FormView):
         file = self.get_form_kwargs().get('files')['file']
         datas = []
         parser_name = "None"
-        parsers = [
-            (iscParser, "isc"),
-            (wgsParser, "wgs"),
-            (xTenParser, "xTen"),
-        ]
+        parsers = get_parsers()
         for (parser, name) in parsers:
             file_data = parser.parse(file)
             if file_data is not None:

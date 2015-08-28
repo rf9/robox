@@ -34,7 +34,7 @@ class BarcodeField(forms.Field):
             # EBI
             return
 
-        raise ValidationError("Invaid barcode")
+        raise ValidationError("Invalid barcode")
 
 
 class UploadForm(forms.Form):
