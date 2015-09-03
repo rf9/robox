@@ -10,7 +10,6 @@ class File(models.Model):
 
 class Entry(models.Model):
     file = models.ForeignKey(File)
-    value = models.DecimalField(decimal_places=10, max_digits=20)
 
 
 class MetaData(models.Model):

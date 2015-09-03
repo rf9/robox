@@ -6,15 +6,17 @@
 </head>
 <body>
 
-<table>
-{% for row in rows %}
-    <tr>
-    {% for cell in row %}
-    <td>{{ cell }}</td>
-    {% endfor %}
-    </tr>
+<h1>Viewing files</h1>
+<a href="{% url 'index' %}">Back</a>
+{% for file in files %}
+    <h3>{{ file.upload_time }}</h3>
+    {% for entry in file.entry_set.all %}
+        {% for data in entry.metadata_set.all %}
+            {{ data.key }}: {{ data.value }}<br>
+        {% endfor %}
+        ----------------<br>
+    {%  endfor %}
 {% endfor %}
-</table>
 
 </body>
 </html>

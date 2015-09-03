@@ -25,7 +25,7 @@ def barcode(request, barcode):
                 data_json[meta_data.key] = meta_data.value
 
             file_json['data'].append(data_json)
-        
+
         response_data['files'].append(file_json)
 
     return HttpResponse(json.dumps(response_data), content_type='application/json')

@@ -1,11 +1,11 @@
 class FileData:
     class Entry:
         def __init__(self, key, slot, value, units):
-            self.value = value
             self.meta = {
                 "name": key,
-                "address": slot,
+                "value": value,
                 "units": units,
+                "address": slot,
             }
 
     def __init__(self):
