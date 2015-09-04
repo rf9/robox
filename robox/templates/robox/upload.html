@@ -2,6 +2,10 @@
 
 {% block title %}Upload{% endblock %}
 {% block heading %}Upload:{% endblock %}
+{% block links %}
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static "robox/upload.css" %}" />
+{% endblock %}
 {% block content %}
     <form action="{% url "upload" %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}

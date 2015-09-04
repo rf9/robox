@@ -2,6 +2,10 @@
 
 {% block title %}Index{% endblock %}
 {% block heading %}Index:{% endblock %}
+{% block links %}
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static "robox/index.css" %}" />
+{% endblock %}
 {% block content %}
     <table>
         <tr>
@@ -13,7 +17,9 @@
             <tr>
                 <td>{{ file.barcode }}</td>
                 <td>{{ file.file }}</td>
-                <td><a href="{% url 'view' file.barcode %}">Show</a></td>
+                <td><form action="{% url 'view' file.barcode %}" method="get">
+                    <input type="submit" value="Show" />
+                </form></td>
                 <td><form action="{% url 'delete_file' file.pk %}" method="post">
                     {%  csrf_token %}
                     <input type="submit" value="Delete" />
