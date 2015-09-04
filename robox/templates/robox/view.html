@@ -1,22 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
+{% extends 'robox/base_generic.html' %}
 
-<h1>Viewing files</h1>
-<a href="{% url 'index' %}">Back</a>
-{% for file in files %}
-    <h3>{{ file.upload_time }}</h3>
-    {% for entry in file.entry_set.all %}
-        {% for data in entry.metadata_set.all %}
-            {{ data.key }}: {{ data.value }}<br>
+{% block title %}Viewing: {{ barcode }}{% endblock %}
+{% block heading %}Viewing: {{ barcode }}{% endblock %}
+{% block content %}
+    {% if files|length_is:'0' %}
+        <h3>No files found.</h3>
+    {% else %}
+        {% for file in files %}
+            <h3>{{ file.upload_time }}</h3>
+            {% for entry in file.entry_set.all %}
+                {% for data in entry.metadata_set.all %}
+                    {{ data.key }}: {{ data.value }}<br>
+                {% endfor %}
+                ----------------<br>
+            {%  endfor %}
         {% endfor %}
-        ----------------<br>
-    {%  endfor %}
-{% endfor %}
-
-</body>
-</html>
+    {% endif %}
+{% endblock %}

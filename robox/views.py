@@ -19,8 +19,7 @@ class UploadView(FormView):
     form_class = UploadForm
 
     def form_valid(self, form):
-
-        file = self.get_form_kwargs().get('files')['file']
+        file = self.request.FILES['file']
         datas = []
         parser_name = "None"
         parsers = get_parsers()
@@ -48,7 +47,7 @@ class UploadView(FormView):
 def view(request, barcode):
     files = File.objects.filter(barcode=barcode)
 
-    return render(request, "robox/view.html", {"files": files})
+    return render(request, "robox/view.html", {"files": files, "barcode": barcode})
 
 
 class FileDelete(DeleteView):

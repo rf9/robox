@@ -20,6 +20,6 @@ from mainsite import settings
 
 urlpatterns = patterns('',
                        url(r'^admin/', include(admin.site.urls)),
-                       url(r'^robox/', include('robox.urls')),
-                       url(r'^api/', include('api.urls'))
+                       url(r'^api/', include('api.urls')),
+                       url(r'^', include('robox.urls')),
                        ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,11 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Upload</title>
-</head>
-<body>
+{% extends 'robox/base_generic.html' %}
 
+{% block title %}Upload{% endblock %}
+{% block heading %}Upload:{% endblock %}
 {% block content %}
     <form action="{% url "upload" %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
@@ -16,5 +12,3 @@
         <input type="submit" value="back" />
     </form>
 {% endblock %}
-</body>
-</html>
