@@ -20,31 +20,35 @@ class UploadView(FormView):
 
     def form_valid(self, form):
         file = self.request.FILES['file']
-        datas = []
-        parser_name = "None"
+        successful_parses = []
         parsers = get_parsers()
         for (parser, name) in parsers:
             file_data = parser.parse(file)
             if file_data is not None:
-                datas.append(file_data)
-                parser_name = name
+                successful_parses.append({"parsed_data": file_data, "parser": name})
 
-        database_file = File.objects.create(
-            file=file,
-            barcode=form.cleaned_data['barcode'],
-            format=parser_name,
-        )
+        if len(successful_parses) == 1:
+            successful_parse = successful_parses[0]
+            database_file = File.objects.create(
+                file=file,
+                barcode=form.cleaned_data['barcode'],
+                format=successful_parse['parser'],
+            )
 
-        if len(datas) == 1:
-            for data in datas[0].data:
+            for data in successful_parse['parsed_data'].data:
                 entry = Entry.objects.create(file=database_file)
                 for key in data.meta:
                     MetaData.objects.create(entry=entry, key=key, value=data.meta[key])
+        else:
+            database_file = File.objects.create(
+                file=file,
+                barcode=form.cleaned_data['barcode'],
+            )
 
         return HttpResponseRedirect(reverse('view', kwargs={'barcode': database_file.barcode}))
 
 
-def view(request, barcode):
+def view_by_barcode(request, barcode):
     files = File.objects.filter(barcode=barcode)
 
     return render(request, "robox/view.html", {"files": files, "barcode": barcode})

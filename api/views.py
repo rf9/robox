@@ -3,7 +3,7 @@ from django_extensions.db.fields import json
 from robox.models import File, Entry, MetaData
 
 
-def barcode(request, barcode):
+def get_by_barcode(request, barcode):
     response_data = {
         'barcode': barcode,
         'files': [],
