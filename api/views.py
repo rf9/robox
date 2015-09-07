@@ -18,9 +18,7 @@ def barcode(request, barcode):
         }
 
         for entry in file.entry_set.all():
-            data_json = {
-                'value': entry.value,
-            }
+            data_json = {}
             for meta_data in entry.metadata_set.all():
                 data_json[meta_data.key] = meta_data.value
 
