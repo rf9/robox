@@ -17,9 +17,7 @@
             <tr>
                 <td>{{ file.barcode }}</td>
                 <td>{{ file.file }}</td>
-                <td><form action="{% url 'view' file.barcode %}" method="get">
-                    <input type="submit" value="Show" />
-                </form></td>
+                <td><input type="button" onclick="location.href='{% url "view" file.barcode %}'" value="Show" /></td>
                 <td><form action="{% url 'delete_file' file.pk %}" method="post">
                     {%  csrf_token %}
                     <input type="submit" value="Delete" />
