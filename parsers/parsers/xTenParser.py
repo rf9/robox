@@ -1,7 +1,9 @@
 from zipfile import BadZipFile
+
 import openpyxl
 from openpyxl.utils.exceptions import InvalidFileException
-from . import make_and_add_parser
+
+from parsers import make_and_add_parser
 
 desc = "xTen"
 

@@ -3,10 +3,10 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.views.generic import FormView, DeleteView
 
-from robox import parsing
+from parsers import parsing
 from robox.forms import UploadForm
 from robox.models import File, Entry, MetaData
-from robox.parsing import RoboxParsingError
+from parsers.parsing import RoboxParsingError
 
 
 def index(request):

@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django_extensions.db.fields import json
-from robox.models import File, Entry, MetaData
+from robox.models import File
 
 
 def get_by_barcode(request, barcode):

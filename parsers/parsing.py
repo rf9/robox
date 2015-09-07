@@ -1,4 +1,4 @@
-from .parsers import get_parsers
+from . import get_parsers
 
 __author__ = 'dr6'
 
