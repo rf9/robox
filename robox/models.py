@@ -1,4 +1,6 @@
+from datetime import timedelta
 from django.db import models
+from django.utils import timezone
 from django.utils.datastructures import OrderedSet
 from django.utils.functional import cached_property
 
@@ -23,6 +25,9 @@ class File(models.Model):
             data = {meta_data.key: meta_data.value for meta_data in entry.metadata_set.all()}
             entry_data.append([data[heading] for heading in self.headings])
         return entry_data
+
+    def recent(self):
+        return self.upload_time > timezone.now() - timedelta(seconds=30)
 
 
 class Entry(models.Model):

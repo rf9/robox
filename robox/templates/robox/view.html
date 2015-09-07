@@ -2,26 +2,43 @@
 
 {% block title %}Viewing: {{ barcode }}{% endblock %}
 {% block heading %}Viewing: {{ barcode }}{% endblock %}
+{% block links %}
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static "robox/view.css" %}" />
+{% endblock %}
 {% block content %}
     {% if files|length_is:'0' %}
         <h3>No files found.</h3>
     {% else %}
-        {% for file in files %}
-            <h3>{{ file.upload_time }}</h3>
-            <table>
-                <tr>
-                    {% for heading in file.headings %}
-                        <th>{{ heading }}</th>
-                    {% endfor %}
-                </tr>
-                {% for data in file.content %}
-                    <tr>
-                        {% for dataum in data %}
-                            <td>{{ dataum }}</td>
+        {% for file in files|dictsortreversed:"upload_time" %}
+            <div class="file {% if file.recent %}recent{% endif %}">
+                <div class="file-header ">
+                    <h3>File: {{ file.file }}</h3>
+                    <h4>Format: {% if file.format %}{{ file.format }}{% else %}Unknown{% endif %}</h4>
+                    <h4>Uploaded at: {{ file.upload_time }}</h4>
+                </div>
+                <input class="toggle-content" id="file{{ file.id }}" type="checkbox">
+                <label for="file{{ file.id }}">
+                    <span>&#9654; Expand</span>
+                    <span>&#9660; Collapse</span>
+                </label>
+                <div class="file-content">
+                    <table>
+                        <tr>
+                            {% for heading in file.headings %}
+                                <th>{{ heading }}</th>
+                            {% endfor %}
+                        </tr>
+                        {% for data in file.content %}
+                            <tr>
+                                {% for dataum in data %}
+                                    <td>{{ dataum }}</td>
+                                {% endfor %}
+                            </tr>
                         {% endfor %}
-                    </tr>
-                {% endfor %}
-            </table>
+                    </table>
+                </div>
+            </div>
         {% endfor %}
     {% endif %}
 {% endblock %}

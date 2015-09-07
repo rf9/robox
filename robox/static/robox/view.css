@@ -1,0 +1,21 @@
+h3, h4 {
+    margin: 0;
+}
+.file-header, .file-content {
+    padding: 5px;
+}
+.toggle-content,                                        /* Hide checkbox */
+.toggle-content ~ .file-content,                        /* Hide file-content */
+.toggle-content + label span + span,                    /* Hide second span (Collapse) */
+.toggle-content:checked + label span {                  /* Hide first span (Expand) when checked */
+    display: none;
+}
+.toggle-content:checked + label span + span {           /* Display second span (Collapse) when checked) */
+    display: inline-block;
+}
+[class^="toggle-content"]:checked ~ .file-content {     /* Display table when checked */
+    display: block;
+}
+.recent {
+    background-color: lightgreen;
+}
