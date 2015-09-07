@@ -1,36 +1,47 @@
-from robox.parsers.FileData import FileData
+from . import make_and_add_parser
+
+
+def accept(file):
+    try:
+        for line in file:
+            cells = line.decode('ascii').replace("\n", "").split(",")
+            return [x for x in filter(None, cells)] == ['Plate Name', 'Well Label', 'Sample Name', 'Peak Count',
+                                                        'Total Conc. (ng/ul)', 'Region[200-700] Molarity (nmol/l)']
+    except UnicodeDecodeError:
+        return False
 
 
 def parse(file):
-    try:
-        data = FileData()
+    first = True
+    for line in file:
+        if first:
+            first = False
+            continue
 
-        first = True
-        for line in file:
-            cells = line.decode('ascii').replace("\n", "").split(",")
-            if first:
-                if [x for x in filter(None, cells)]\
-                        != ['Plate Name', 'Well Label', 'Sample Name', 'Peak Count', 'Total Conc. (ng/ul)',
-                            'Region[200-700] Molarity (nmol/l)']:
-                    return None
-                first = False
-                continue
+        cells = line.decode('ascii').replace("\n", "").split(",")
 
-            slot = cells[2].split("_")[0]
-            concentration = cells[5]
-            dilution_parts = cells[2].split("_")[-2:]
+        slot = cells[2].split("_")[0]
+        concentration = cells[5]
+        dilution_parts = cells[2].split("_")[-2:]
 
-            try:
-                dilution = int(dilution_parts[0]) / int(dilution_parts[1]) * 100
-            except ValueError:
-                dilution = None
+        try:
+            dilution = int(dilution_parts[0]) / int(dilution_parts[1]) * 100
+        except ValueError:
+            dilution = None
 
-            if concentration:
-                data.add_entry_with_slot_and_units("concentration", slot, concentration, "nM")
-            if dilution:
-                data.add_entry_with_slot_and_units("dilution", slot, dilution, "%")
+        if concentration:
+            yield {"name": "concentration",
+                   "address": slot,
+                   "value": concentration,
+                   "units": "nM"
+                   }
 
-    except UnicodeDecodeError:
-        return None
+        if dilution:
+            yield {"name": "dilution",
+                   "address": slot,
+                   "value": dilution,
+                   "units": "%"
+                   }
 
-    return data
+
+make_and_add_parser("isc", parse, accept)
