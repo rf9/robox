@@ -46,7 +46,7 @@ class UploadView(FormView):
 def view_by_barcode(request, barcode):
     files = File.objects.filter(barcode=barcode)
 
-    return render(request, "robox/view.html", {"files": files, "barcode": barcode})
+    return render(request, "robox/view.html", {'files': files, 'barcode': barcode})
 
 
 class FileDelete(DeleteView):

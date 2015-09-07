@@ -8,12 +8,20 @@
     {% else %}
         {% for file in files %}
             <h3>{{ file.upload_time }}</h3>
-            {% for entry in file.entry_set.all %}
-                {% for data in entry.metadata_set.all %}
-                    {{ data.key }}: {{ data.value }}<br>
+            <table>
+                <tr>
+                    {% for heading in file.headings %}
+                        <th>{{ heading }}</th>
+                    {% endfor %}
+                </tr>
+                {% for data in file.content %}
+                    <tr>
+                        {% for dataum in data %}
+                            <td>{{ dataum }}</td>
+                        {% endfor %}
+                    </tr>
                 {% endfor %}
-                ----------------<br>
-            {%  endfor %}
+            </table>
         {% endfor %}
     {% endif %}
 {% endblock %}
