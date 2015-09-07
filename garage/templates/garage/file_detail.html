@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>File detail</title>
+</head>
+<body>
+
+<h3>File: {{ file.filename }}</h3>
+<h3>Barcode: {{ file.barcode }}</h3>
+<h3>Uploaded: {{ file.upload_date }}</h3> <!-- | date:"Y-m-d H:i:s" -->
+
+<table border="1">
+    <tr>
+        <th>#</th>
+{% for h in headings %}
+        <th>{{ h }}</th>
+{% endfor %}
+    </tr>
+{% for r in tabledata %}
+    <tr>
+        <td>{{ r.index }}</td>
+{% for d in r.elements %}
+        <td>{{ d }}</td>
+{% endfor %}
+    </tr>
+{% endfor %}
+</table>
+
+</body>
+</html>
