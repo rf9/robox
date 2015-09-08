@@ -11,6 +11,12 @@ desc = "xTen"
 def accept(file_path):
     try:
         file = openpyxl.load_workbook(file_path)
+        ws = file[file.get_sheet_names()[1]]
+
+        for row in ws.rows:
+            return [x.value for x in row] == ["Well\nRow", "Well\nCol", "Content", "Raw Data (485-12/EM520)",
+                                              "Linear regression fit based on Raw Data (485-12/EM520)"]
+
     except (InvalidFileException, BadZipFile):
         return False
 
@@ -36,5 +42,6 @@ def parse(file_path):
                "value": concentration,
                "units": "ng/ul"
                }
+
 
 make_and_add_parser("xTen", parse, accept)
