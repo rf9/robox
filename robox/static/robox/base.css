@@ -1,6 +1,7 @@
 .nav-bar h1 {
     font-family: sans-serif;
     display: inline-block;
+    margin: 0;
 }
 .nav-bar a {
     display: inline-block;
@@ -9,14 +10,20 @@
 .nav-bar {
     border-bottom: solid black thin;
     padding-left: 5px;
+    padding-top: 10px;
 }
 .heading {
     padding-left: 10px;
-    padding-top: 10px;
 }
 .heading h2 {
     font-family: sans-serif;
+    margin: 10px 0;
 }
 .content {
     padding-left: 10px;
+}
+#search-box {
+    display: inline-block;
+    float: right;
+    margin-top: 15px;
 }

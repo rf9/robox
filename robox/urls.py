@@ -8,5 +8,6 @@ urlpatterns = [
     url(r'^view/(?P<barcode>\S+)/$', views.view_by_barcode, name="view"),
     url(r'^view/$', views.index, name="index"),
     url(r'^delete/(?P<pk>[0-9]+)/$', views.FileDelete.as_view(), name='delete_file'),
+    url(r'^search/$', views.search, name="search"),
     url(r'^$', RedirectView.as_view(url='/view/', permanent=True)),
 ]

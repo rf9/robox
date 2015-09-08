@@ -15,6 +15,14 @@ def index(request):
     return render(request, "robox/index.html", {"files": files})
 
 
+def search(request):
+    barcode = request.GET.get('barcode')
+    if barcode:
+        return HttpResponseRedirect(reverse('view', kwargs={'barcode': barcode}))
+    else:
+        return HttpResponseRedirect(reverse('index'))
+
+
 class UploadView(FormView):
     template_name = "robox/upload.html"
     form_class = UploadForm

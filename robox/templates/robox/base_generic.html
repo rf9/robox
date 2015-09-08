@@ -10,6 +10,10 @@
 </head>
 <body>
 <div class="nav-bar">
+    <form id="search-box" action="{% url 'search' %}">
+        <input type="text" name="barcode" placeholder="Barcode...">
+        <button type="submit">Search</button>
+    </form>
     <h1>Robox</h1>
     <a href="{% url 'index' %}">Index</a>
     <a href="{% url 'upload' %}">Upload</a>
