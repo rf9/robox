@@ -1,7 +1,7 @@
 {% extends 'robox/base_generic.html' %}
 
 {% block title %}Index{% endblock %}
-{% block heading %}Index:{% endblock %}
+{% block heading %}Latest {{ files.count }} files:{% endblock %}
 {% block links %}
     {% load staticfiles %}
     <link rel="stylesheet" type="text/css" href="{% static "robox/css/index.css" %}" />
@@ -21,8 +21,8 @@
                 <td>{{ file.barcode }}</td>
                 <td>{{ file.file }}</td>
                 <td>{{ file.upload_time }}</td>
-                <td><input type="button" onclick="location.href='{% url "view" file.barcode %}'" value="Show" /></td>
-                <td><form action="{% url 'delete_file' file.pk %}" method="post">
+                <td><input type="button" onclick="location.href='{% url "robox:view" file.barcode %}'" value="Show" /></td>
+                <td><form action="{% url 'robox:delete_file' file.pk %}" method="post">
                     {%  csrf_token %}
                     <input type="submit" value="Delete" />
                 </form></td>

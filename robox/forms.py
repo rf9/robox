@@ -14,6 +14,12 @@ class BarcodeField(forms.Field):
 
 
 def validate_barcode(barcode):
+    """
+    Validate the barocode against Barcode39, EAN13, and EBI formats.
+    :raises ValidationError: if barcode is not valid.
+    :param barcode: The barcode to be validated
+    :return: None if valid.
+    """
     barcode = barcode.upper()
 
     if re.match(r'^[0-9A-Z\*]{2,}$', barcode) is not None:

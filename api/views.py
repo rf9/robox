@@ -39,7 +39,8 @@ def upload(request):
         return HttpResponse(json.dumps(response_data), content_type='application/json')
     except ValidationError:
         return HttpResponse(json.dumps({'error': 'Invalid barcode', 'barcode': barcode}),
-                            content_type='application/json')
+                            content_type='application/json',
+                            status=422)
 
 
 def serialise_file(file):

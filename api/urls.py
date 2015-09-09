@@ -1,4 +1,4 @@
-from django.conf.urls import url
+from django.conf.urls import url, patterns
 from api import views
 
 __author__ = 'rf9'

@@ -18,8 +18,9 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from mainsite import settings
 
-urlpatterns = patterns('',
+urlpatterns = patterns("",
                        url(r'^admin/', include(admin.site.urls)),
-                       url(r'^api/', include('api.urls')),
-                       url(r'^', include('robox.urls')),
+                       url(r'^api/', include('api.urls', namespace='api')),
+                       url(r'^docs/', include('docs.urls', namespace='docs')),
+                       url(r'^', include('robox.urls', namespace='robox')),
                        ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

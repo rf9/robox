@@ -1,0 +1,126 @@
+{% extends 'robox/base_generic.html' %}
+
+{% block title %}API docs{% endblock %}
+{% block heading %}API docs:{% endblock %}
+{% block links %}
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static "docs/css/api.css" %}" />
+{% endblock %}
+{% block content %}
+    <div class="calls">
+        <label for="barcode-get-expand">
+            api/barcode/<span class="parameter">{barcode}</span>/
+        </label>
+        <input type="checkbox" id="barcode-get-expand">
+        <div class="methods">
+            <p class="description">Gets all files and their parsed data with the given barcode.</p>
+            <p>Type: get</p>
+            <p>Responses</p>
+            <div class="responses">
+                <label for="barcode-success-expand">
+                    Success:
+                </label>
+                <input type="checkbox" id="barcode-success-expand">
+                <div class="methods">
+                    <div class="response">
+                        <p>Status code: 200</p>
+                        <p>Media type: application/json</p>
+                        <label for="barcode-get-format-expand">
+                            Format:
+                        </label>
+                        <input type="checkbox" id="barcode-get-format-expand">
+                        <div class="json"><code>
+                            {{ barcode_response_success_format|linebreaksbr }}
+                        </code></div>
+                        <label for="barcode-get-example-expand">
+                            Examples:
+                        </label>
+                        <input type="checkbox" id="barcode-get-example-expand">
+                        <div class="examples">
+                            <div class="json"><code>
+                                {{ barcode_response_success_example|linebreaksbr }}
+                            </code></div>
+                            <div class="json"><code>
+                                {{ barcode_response_success_empty_example|linebreaksbr }}
+                            </code></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <label for="upload-expand">
+            api/upload/
+        </label>
+        <input type="checkbox" id="upload-expand"/>
+        <div class="methods">
+            <p class="description">Upload a set of files to a particular barcode and return their parsed data.</p>
+            <p>Type: post</p>
+            <p>Request</p>
+            <div class="requests">
+                <label for="upload-request">
+                    Arguments:
+                </label>
+                <input type="checkbox" id="upload-request"/>
+                <div class="request">
+                    <p>Parameters:</p>
+                    <div class="parameters">
+                        <p>barcode: <span class="parameter">{string}</span></p>
+                    </div>
+                    <p>Files:</p>
+                    <div class="parameters">
+                        <p>any_name: <span class="parameter">{file}</span></p>
+                        <p>any_name: <span class="parameter">{file}</span></p>
+                        <p>...</p>
+                    </div>
+                </div>
+            </div>
+            <p>Responses</p>
+            <div class="responses">
+                <label for="upload-response-success">
+                    Success:
+                </label>
+                <input type="checkbox" id="upload-response-success">
+                <div class="response">
+                    <p>Status code: 200</p>
+                    <p>Media type: application/json</p>
+                    <label for="upload-response-success-format">
+                        Format:
+                    </label>
+                    <input type="checkbox" id="upload-response-success-format">
+                    <div class="json"><code>
+                        {{ upload_response_success_format|linebreaksbr }}
+                    </code></div>
+                    <label for="upload-response-success-example">
+                        Example:
+                    </label>
+                    <input type="checkbox" id="upload-response-success-example">
+                    <div class="json"><code>
+                        {{ upload_response_success_example|linebreaksbr }}
+                    </code></div>
+                </div>
+                <label for="upload-response-error">
+                    Error:
+                </label>
+                <input type="checkbox" id="upload-response-error">
+                <div class="response">
+                    <p>Status code: 422</p>
+                    <p>Media type: application/json</p>
+                    <label for="upload-response-error-format">
+                        Format:
+                    </label>
+                    <input type="checkbox" id="upload-response-error-format">
+                    <div class="json"><code>
+                        {{ upload_response_error_format|linebreaksbr }}
+                    </code></div>
+                    <label for="upload-response-error-example">
+                        Example:
+                    </label>
+                    <input type="checkbox" id="upload-response-error-example">
+                    <div class="json"><code>
+                        {{ upload_response_error_example|linebreaksbr }}
+                    </code></div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

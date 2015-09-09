@@ -1,0 +1,12 @@
+.tab {
+    padding-left: 30px;
+    padding-bottom: 15px;
+}
+.string {
+    display: inline-block;
+}
+.python {
+    margin-left: 50px;
+    padding: 5px;
+    background-color: whitesmoke;
+}

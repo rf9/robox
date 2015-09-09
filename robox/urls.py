@@ -1,4 +1,4 @@
-from django.conf.urls import url
+from django.conf.urls import url, patterns
 from django.views.generic import RedirectView
 
 from robox import views

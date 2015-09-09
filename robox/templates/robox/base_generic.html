@@ -11,13 +11,14 @@
 </head>
 <body>
 <div class="nav-bar">
-    <form id="search-box" action="{% url 'search' %}">
+    <form id="search-box" action="{% url 'robox:search' %}">
         <input type="text" name="barcode" placeholder="Barcode...">
         <button type="submit">Search</button>
     </form>
     <h1>Robox</h1>
-    <a href="{% url 'index' %}">Index</a>
-    <a href="{% url 'upload' %}">Upload</a>
+    <a href="{% url 'robox:index' %}">Index</a>
+    <a href="{% url 'robox:upload' %}">Upload</a>
+    <a href="{% url 'docs:index' %}">Documentation</a>
 </div>
 <div class="heading">
     <h2>{% block heading %}{% endblock %}</h2>

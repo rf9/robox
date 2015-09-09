@@ -1,0 +1,27 @@
+p, label {
+    font-family: sans-serif;
+}
+.content div {
+    margin-left: 30px;
+}
+.json {
+    background-color: whitesmoke;
+    margin-bottom: 20px;
+}
+.parameter {
+    color: red;
+    display: inline-block;
+}
+label {
+    display: block;
+    margin-bottom: 20px;
+}
+input[type=checkbox] {
+    display: none;
+}
+input:not(checked) + div {
+    display: none;
+}
+input:checked + div {
+    display: block;
+}

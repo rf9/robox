@@ -1,0 +1,31 @@
+{% extends 'robox/base_generic.html' %}
+
+{% block title %}Parser docs{% endblock %}
+{% block heading %}Parser docs:{% endblock %}
+{% block links %}
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static "docs/css/docs_base.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "docs/css/parser.css" %}" />
+{% endblock %}
+{% block content %}
+    <h3>Adding a parser:</h3>
+    <p>To add a parser, simply place the parser.py file into the parsers/parsers directory and restart the server.</p>
+
+    <h3>Creating a parser</h3>
+    <p>A parser file should looks something like this:</p>
+    <div class="python"><code>
+        <strong>from</strong> parsers <strong>import</strong> make_and_add_parser<br>
+        <br>
+        <strong>def</strong> accept(file):<br>
+        <div class="tab"><i># Return true if the passed in file can be parsed, false otherwise.</i></div>
+        <strong>def</strong> parse(file):<br>
+        <div class="tab"><i># Yield a dictionary corresponding to each entry in the file.<br>
+            <br>
+            #e.g:</i><br>
+            <strong>yield</strong> { <span class="strings"><strong>"name"</strong>: <strong>"concentration"</strong>, <strong>"address"</strong>: slot, <strong>"value"</strong>: concentration, <strong>"units"</strong>: <strong>"nM"</strong> }</span>
+        </div>
+        make_and_add_parser(<strong>"parser_description"</strong>, parse, accept)
+    </code></div>
+    <p></p>
+    <p>The <strong>"parser_description"</strong> string should be a unique code for identifying which parser the file was parsed with.</p>
+{% endblock %}

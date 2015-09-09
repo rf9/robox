@@ -10,7 +10,7 @@ from robox.models import File
 
 
 def index(request):
-    files = File.objects.all()
+    files = File.objects.all().order_by('-upload_time')[:20]
 
     return render(request, "robox/index.html", {"files": files})
 
@@ -18,9 +18,9 @@ def index(request):
 def search(request):
     barcode = request.GET.get('barcode')
     if barcode:
-        return HttpResponseRedirect(reverse('view', kwargs={'barcode': barcode}))
+        return HttpResponseRedirect(reverse('robox:view', kwargs={'barcode': barcode}))
     else:
-        return HttpResponseRedirect(reverse('index'))
+        return HttpResponseRedirect(reverse('robox:index'))
 
 
 class UploadView(FormView):
@@ -38,6 +38,12 @@ class UploadView(FormView):
 
 @atomic
 def upload_file(barcode, file):
+    """
+    Atomically uploads a file to the database and parses it.
+    :param barcode: The barcode for the file to be uploaded to.
+    :param file: The Django file to be uploaded
+    :return: The database model of the uploaded file.
+    """
     barcode = barcode.upper()
     try:
         database_file = File.objects.create(
