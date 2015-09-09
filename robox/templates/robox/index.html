@@ -11,12 +11,16 @@
         <tr>
             <th>Barcode</th>
             <th>Filename</th>
+            {% load tz %}
+            {% get_current_timezone as TIME_ZONE %}
+            <th>Upload time ({{ TIME_ZONE }})</th>
             <th colspan="2"></th>
         </tr>
-        {% for file in files %}
+        {% for file in files|dictsortreversed:"upload_time" %}
             <tr>
                 <td>{{ file.barcode }}</td>
                 <td>{{ file.file }}</td>
+                <td>{{ file.upload_time }}</td>
                 <td><input type="button" onclick="location.href='{% url "view" file.barcode %}'" value="Show" /></td>
                 <td><form action="{% url 'delete_file' file.pk %}" method="post">
                     {%  csrf_token %}

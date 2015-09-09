@@ -27,24 +27,33 @@ class UploadView(FormView):
     template_name = "robox/upload.html"
     form_class = UploadForm
 
-    @atomic
     def form_valid(self, form):
         file = self.request.FILES['file']
+        barcode = form.cleaned_data['barcode']
 
-        try:
-            database_file = File.objects.create(
-                file=file,
-                barcode=form.cleaned_data['barcode'],
-            )
-            database_file.parse()
-        except DatabaseError as err:
-            try:
-                database_file.file.delete()
-            except NameError:
-                pass
-            raise err
+        database_file = upload_file(barcode, file)
 
         return HttpResponseRedirect(reverse('view', kwargs={'barcode': database_file.barcode}))
+
+
+@atomic
+def upload_file(barcode, file):
+    barcode = barcode.upper()
+    try:
+        database_file = File.objects.create(
+            file=file,
+            barcode=barcode,
+        )
+        database_file.parse()
+    except DatabaseError as err:
+        try:
+            # noinspection PyUnboundLocalVariable
+            database_file.file.delete()
+        except NameError:
+            pass
+        raise err
+
+    return database_file
 
 
 def view_by_barcode(request, barcode):
