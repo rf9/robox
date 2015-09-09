@@ -1,7 +1,11 @@
 from django.contrib import admin
-from django.contrib.admin.filters import BooleanFieldListFilter
 
 from robox.models import File
+
+
+def reparse_file(modeladmin, request, queryset):
+    for file in queryset.all():
+        file.parse()
 
 
 @admin.register(File)
@@ -10,3 +14,4 @@ class FileAdmin(admin.ModelAdmin):
     fields = ('barcode', 'file')
     list_filter = ('format', 'upload_time')
     search_fields = ['barcode']
+    actions = [reparse_file]

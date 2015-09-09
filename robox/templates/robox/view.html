@@ -4,7 +4,8 @@
 {% block heading %}Viewing: {{ barcode }}{% endblock %}
 {% block links %}
     {% load staticfiles %}
-    <link rel="stylesheet" type="text/css" href="{% static "robox/view.css" %}" />
+    <link rel="stylesheet" href="{% static "robox/css/view.css" %}" />
+    <script src="{% static "robox/js/view.js" %}"></script>
 {% endblock %}
 {% block content %}
     {% if files|length_is:'0' %}

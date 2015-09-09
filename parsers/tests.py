@@ -31,11 +31,11 @@ class AbstractClasses:
         def test_parsed_data_has_correct_headings(self):
             headings = {key for entry in self.parsed_data for key in entry}
 
-            self.assertEqual(self.expected_headings, sorted(headings))
+            self.assertEqual(sorted(headings), self.expected_headings)
 
         def test_parsed_data_is_correct(self):
             for actual_entry, expected_entry, index in zip(self.parsed_data, self.expected_data, range(100)):
-                self.assertEqual(actual_entry, expected_entry, msg="Line " + str(index))
+                self.assertEqual(expected_entry, actual_entry, msg="Line " + str(index))
 
 
 class IscParserTest(AbstractClasses.ParserTestMixin):

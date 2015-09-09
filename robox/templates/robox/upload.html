@@ -4,7 +4,7 @@
 {% block heading %}Upload:{% endblock %}
 {% block links %}
     {% load staticfiles %}
-    <link rel="stylesheet" type="text/css" href="{% static "robox/upload.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "robox/css/upload.css" %}" />
 {% endblock %}
 {% block content %}
     <form action="{% url "upload" %}" method="post" enctype="multipart/form-data">

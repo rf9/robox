@@ -16,6 +16,10 @@ h3, h4 {
 [class^="toggle-content"]:checked ~ .file-content {     /* Display table when checked */
     display: block;
 }
+.file {
+    background-color: transparent;
+    transition: background-color 2s;
+}
 .recent {
     background-color: lightgreen;
 }

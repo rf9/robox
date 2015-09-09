@@ -1,8 +1,13 @@
 from datetime import timedelta
+
 from django.db import models
+from django.db.transaction import atomic
 from django.utils import timezone
 from django.utils.datastructures import OrderedSet
 from django.utils.functional import cached_property
+
+from parsers import parsing
+from parsers.parsing import RoboxParsingError
 
 
 class File(models.Model):
@@ -28,6 +33,23 @@ class File(models.Model):
 
     def recent(self):
         return self.upload_time > timezone.now() - timedelta(seconds=30)
+
+    @atomic
+    def parse(self):
+        # Delete any old entries (in case it is a reparse.
+        Entry.objects.filter(file=self).delete()
+
+        try:
+            parsed_file = parsing.parse(self.file)
+        except RoboxParsingError:
+            pass
+        else:
+            self.format = parsed_file['parser']
+            self.save()
+            for data in parsed_file['data']:
+                entry = Entry.objects.create(file=self)
+                for key, value in data.items():
+                    MetaData.objects.create(entry=entry, key=key, value=value)
 
 
 class Entry(models.Model):
