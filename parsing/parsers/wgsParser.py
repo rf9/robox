@@ -1,4 +1,4 @@
-from parsers import make_and_add_parser
+from parsing import make_and_add_parser
 
 desc = "wgs"
 

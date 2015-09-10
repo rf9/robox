@@ -1,0 +1,15 @@
+{% extends 'robox/base_generic.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+{% block heading %}{{ title }}:{% endblock %}
+{% block links %}
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static "docs/css/docs_base.css" %}" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/default.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+{% endblock %}
+{% block content %}
+    {% load markdown_filter %}
+    {{ markdown_content|markdownify|safe }}
+{% endblock %}

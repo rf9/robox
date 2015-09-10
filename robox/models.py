@@ -5,9 +5,7 @@ from django.db.transaction import atomic
 from django.utils import timezone
 from django.utils.datastructures import OrderedSet
 from django.utils.functional import cached_property
-
-from parsers import parsing
-from parsers.parsing import RoboxParsingError
+import parsing
 
 
 class File(models.Model):
@@ -41,7 +39,7 @@ class File(models.Model):
 
         try:
             parsed_file = parsing.parse(self.file)
-        except RoboxParsingError:
+        except parsing.RoboxParsingError:
             pass
         else:
             self.format = parsed_file['parser']

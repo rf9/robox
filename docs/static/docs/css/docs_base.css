@@ -9,3 +9,7 @@ p {
     font-family: sans-serif;
     padding-left: 25px;
 }
+pre {
+    margin-left: 50px;
+    line-height: 10px;
+}
