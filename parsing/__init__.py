@@ -1,5 +1,6 @@
 from collections import namedtuple as _namedtuple, OrderedDict as _OrderedDict
 import importlib
+import os
 
 __author__ = 'dr6'
 
@@ -26,7 +27,7 @@ def add_parser(p):
     _PARSERS[p.desc] = p
 
 
-def make_and_add_parser(desc, parse, accept=None):
+def make_and_add_parser(desc, parse_function, accept_function=None):
     """
     Makes a parser object from the given parameters,
     and adds it to the internal collection of parsers.
@@ -41,11 +42,11 @@ def make_and_add_parser(desc, parse, accept=None):
     :rtype : _Parser
     :param desc: A text description of this parser
     :type desc: str
-    :param parse: A function to parse the file
-    :param accept: A boolean function that predicts whether the given file is suitable
+    :param parse_function: A function to parse the file
+    :param accept_function: A boolean function that predicts whether the given file is suitable
     :return: the parser added
     """
-    p = _Parser(desc=desc, parse=parse, accept=accept)
+    p = _Parser(desc=desc, parse=parse_function, accept=accept_function)
     add_parser(p)
     return p
 
@@ -65,13 +66,9 @@ def get_parsers(file_to_parse=None):
     return [p for p in _PARSERS.values() if p.accept(file_to_parse)]
 
 
-import os
-
 for module in os.listdir(os.path.join(os.path.dirname(__file__), "parsers")):
     if module.endswith('.py') and module[0] not in '._':
         importlib.import_module('parsing.parsers.' + module[:-3])
-
-del os
 
 
 class RoboxParsingError(Exception):
@@ -93,4 +90,3 @@ def parse(file_to_parse):
         return {"data": list(parser.parse(file_to_parse)), "parser": parser.desc}
     except Exception as err:
         fail("An error %s was raised by parser %r" % (err, parser))
-

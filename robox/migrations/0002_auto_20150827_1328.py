@@ -7,7 +7,6 @@ import datetime
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('robox', '0001_initial'),
     ]
@@ -28,7 +27,8 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='file',
             name='upload_time',
-            field=models.DateTimeField(default=datetime.datetime(2015, 8, 27, 13, 28, 11, 611856, tzinfo=utc), auto_now_add=True),
+            field=models.DateTimeField(default=datetime.datetime(2015, 8, 27, 13, 28, 11, 611856, tzinfo=utc),
+                                       auto_now_add=True),
             preserve_default=False,
         ),
     ]

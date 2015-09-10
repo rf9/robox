@@ -1,7 +1,5 @@
 .idea
 db.sqlite3
 venv
-.DS_Store
-__pycache__
 files
 secret.py

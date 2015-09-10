@@ -1,8 +1,7 @@
 import os
 
 from django.test import TestCase
-
-import parsers
+from parsing import parsers
 
 __author__ = 'rf9'
 
