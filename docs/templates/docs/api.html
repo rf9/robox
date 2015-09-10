@@ -5,6 +5,9 @@
 {% block links %}
     {% load staticfiles %}
     <link rel="stylesheet" type="text/css" href="{% static "docs/css/api.css" %}" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/default.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
 {% endblock %}
 {% block content %}
     <div class="calls">
@@ -29,20 +32,22 @@
                             Format:
                         </label>
                         <input type="checkbox" id="barcode-get-format-expand">
-                        <div class="json"><code>
-                            {{ barcode_response_success_format|linebreaksbr }}
-                        </code></div>
+                        <div>
+                        <pre><code class="json">
+                            {{ barcode_response_success_format }}
+                        </code></pre>
+                        </div>
                         <label for="barcode-get-example-expand">
                             Examples:
                         </label>
                         <input type="checkbox" id="barcode-get-example-expand">
                         <div class="examples">
-                            <div class="json"><code>
-                                {{ barcode_response_success_example|linebreaksbr }}
-                            </code></div>
-                            <div class="json"><code>
-                                {{ barcode_response_success_empty_example|linebreaksbr }}
-                            </code></div>
+                            <pre><code class="json">
+                                {{ barcode_response_success_example }}
+                            </code></pre>
+                            <pre><code class="json">
+                                {{ barcode_response_success_empty_example }}
+                            </code></pre>
                         </div>
                     </div>
                 </div>
@@ -87,16 +92,20 @@
                         Format:
                     </label>
                     <input type="checkbox" id="upload-response-success-format">
-                    <div class="json"><code>
-                        {{ upload_response_success_format|linebreaksbr }}
-                    </code></div>
+                    <div>
+                    <pre><code class="json">
+                        {{ upload_response_success_format }}
+                    </code></pre>
+                    </div>
                     <label for="upload-response-success-example">
                         Example:
                     </label>
                     <input type="checkbox" id="upload-response-success-example">
-                    <div class="json"><code>
-                        {{ upload_response_success_example|linebreaksbr }}
-                    </code></div>
+                    <div>
+                    <pre><code class="json">
+                        {{ upload_response_success_example }}
+                    </code></pre>
+                    </div>
                 </div>
                 <label for="upload-response-error">
                     Error:
@@ -109,16 +118,20 @@
                         Format:
                     </label>
                     <input type="checkbox" id="upload-response-error-format">
-                    <div class="json"><code>
-                        {{ upload_response_error_format|linebreaksbr }}
-                    </code></div>
+                    <div>
+                    <pre><code class="json">
+                        {{ upload_response_error_format }}
+                    </code></pre>
+                    </div>
                     <label for="upload-response-error-example">
                         Example:
                     </label>
                     <input type="checkbox" id="upload-response-error-example">
-                    <div class="json"><code>
-                        {{ upload_response_error_example|linebreaksbr }}
-                    </code></div>
+                    <div>
+                    <pre><code class="json">
+                        {{ upload_response_error_example }}
+                    </code></pre>
+                    </div>
                 </div>
             </div>
         </div>
