@@ -24,6 +24,11 @@ h3, h4 {
     background-color: lightgreen;
 }
 .upload {
-    float: right;
+    width: 100%;
+    height: 30px;
+}
+.upload form {
     padding: 5px;
+    position: absolute;
+    right: 0;
 }

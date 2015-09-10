@@ -11,13 +11,20 @@ from robox.views import upload_file
 
 
 def get_by_barcode(request, barcode):
-    barcode = barcode.upper()
-    response_data = {
-        'barcode': barcode,
-        'files': [serialise_file(file) for file in File.objects.filter(barcode=barcode)],
-    }
+    try:
+        validate_barcode(barcode)
 
-    return HttpResponse(json.dumps(response_data), content_type='application/json')
+        barcode = barcode.upper()
+        response_data = {
+            'barcode': barcode,
+            'files': [serialise_file(file) for file in File.objects.filter(barcode=barcode)],
+        }
+
+        return HttpResponse(json.dumps(response_data), content_type='application/json')
+    except ValidationError:
+        return HttpResponse(json.dumps({'error': 'Invalid barcode', 'barcode': barcode}),
+                            content_type='application/json',
+                            status=422)
 
 
 @csrf_exempt

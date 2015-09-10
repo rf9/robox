@@ -33,22 +33,38 @@
                         </label>
                         <input type="checkbox" id="barcode-get-format-expand">
                         <div>
-                        <pre><code class="json">
-                            {{ barcode_response_success_format }}
-                        </code></pre>
+                            <pre><code class="json">{{ barcode_response_success_format }}</code></pre>
                         </div>
                         <label for="barcode-get-example-expand">
                             Examples:
                         </label>
                         <input type="checkbox" id="barcode-get-example-expand">
                         <div class="examples">
-                            <pre><code class="json">
-                                {{ barcode_response_success_example }}
-                            </code></pre>
-                            <pre><code class="json">
-                                {{ barcode_response_success_empty_example }}
-                            </code></pre>
+                            <pre><code class="json">{{ barcode_response_success_example }}</code></pre>
+                            <pre><code class="json">{{ barcode_response_success_empty_example }}</code></pre>
                         </div>
+                    </div>
+                </div>
+                <label for="barcode-response-error">
+                    Error:
+                </label>
+                <input type="checkbox" id="barcode-response-error">
+                <div class="response">
+                    <p>Status code: 422</p>
+                    <p>Media type: application/json</p>
+                    <label for="invalid-barcode-response-error-format-1">
+                        Format:
+                    </label>
+                    <input type="checkbox" id="invalid-barcode-response-error-format-1">
+                    <div>
+                        <pre><code class="json">{{ invalid_barcode_response_error_format }}</code></pre>
+                    </div>
+                    <label for="invalid-barcode-response-error-example-1">
+                        Example:
+                    </label>
+                    <input type="checkbox" id="invalid-barcode-response-error-example-1">
+                    <div><pre><code class="json">{{ invalid_barcode_response_error_example }}
+                    </code></pre>
                     </div>
                 </div>
             </div>
@@ -73,9 +89,13 @@
                     </div>
                     <p>Files:</p>
                     <div class="parameters">
-                        <p>any_name: <span class="parameter">{file}</span></p>
-                        <p>any_name: <span class="parameter">{file}</span></p>
-                        <p>...</p>
+                        <p>Type: <span class="parameter">{multipart/form-data}</span></p>
+                        <p>Contents:</p>
+                        <div>
+                            <p>any_name: <span class="parameter">{application/octet-stream}</span></p>
+                            <p>any_name: <span class="parameter">{application/octet-stream}</span></p>
+                            <p>...</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -93,18 +113,14 @@
                     </label>
                     <input type="checkbox" id="upload-response-success-format">
                     <div>
-                    <pre><code class="json">
-                        {{ upload_response_success_format }}
-                    </code></pre>
+                        <pre><code class="json">{{ upload_response_success_format }}</code></pre>
                     </div>
                     <label for="upload-response-success-example">
                         Example:
                     </label>
                     <input type="checkbox" id="upload-response-success-example">
                     <div>
-                    <pre><code class="json">
-                        {{ upload_response_success_example }}
-                    </code></pre>
+                        <pre><code class="json">{{ upload_response_success_example }}</code></pre>
                     </div>
                 </div>
                 <label for="upload-response-error">
@@ -119,17 +135,13 @@
                     </label>
                     <input type="checkbox" id="upload-response-error-format">
                     <div>
-                    <pre><code class="json">
-                        {{ upload_response_error_format }}
-                    </code></pre>
+                        <pre><code class="json">{{ invalid_barcode_response_error_format }}</code></pre>
                     </div>
                     <label for="upload-response-error-example">
                         Example:
                     </label>
                     <input type="checkbox" id="upload-response-error-example">
-                    <div>
-                    <pre><code class="json">
-                        {{ upload_response_error_example }}
+                    <div><pre><code class="json">{{ invalid_barcode_response_error_example }}
                     </code></pre>
                     </div>
                 </div>
