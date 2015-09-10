@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.db import DatabaseError
 from django.db.transaction import atomic
@@ -5,7 +6,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.views.generic import FormView, DeleteView
 
-from robox.forms import UploadForm
+from robox.forms import UploadForm, validate_barcode
 from robox.models import File
 
 
@@ -28,12 +29,12 @@ class UploadView(FormView):
     form_class = UploadForm
 
     def form_valid(self, form):
-        file = self.request.FILES['file']
+        files = self.request.FILES
         barcode = form.cleaned_data['barcode']
 
-        database_file = upload_file(barcode, file)
+        database_files = [upload_file(barcode, files.get(file_name)) for file_name in files.keys()]
 
-        return HttpResponseRedirect(reverse('view', kwargs={'barcode': database_file.barcode}))
+        return HttpResponseRedirect(reverse('robox:view', kwargs={'barcode': database_files[0].barcode}))
 
 
 @atomic
@@ -63,11 +64,24 @@ def upload_file(barcode, file):
 
 
 def view_by_barcode(request, barcode):
-    files = File.objects.filter(barcode=barcode)
+    barcode = barcode.upper()
+    try:
+        validate_barcode(barcode)
+        files = File.objects.filter(barcode=barcode)
 
-    return render(request, "robox/view.html", {'files': files, 'barcode': barcode})
+        return render(request, "robox/view.html", {'files': files, 'barcode': barcode})
+    except ValidationError:
+        return render(request, "robox/view.html", {'invalid': True, 'barcode': barcode})
+
+
+def upload_by_barcode(request, barcode):
+    files = request.FILES
+
+    database_files = [upload_file(barcode, files.get(file_name)) for file_name in files.keys()]
+
+    return HttpResponseRedirect(reverse('robox:view', kwargs={'barcode': database_files[0].barcode}))
 
 
 class FileDelete(DeleteView):
     model = File
-    success_url = reverse_lazy('index')
+    success_url = reverse_lazy('robox:index')

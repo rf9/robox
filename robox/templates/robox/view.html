@@ -8,38 +8,50 @@
     <script src="{% static "robox/js/view.js" %}"></script>
 {% endblock %}
 {% block content %}
-    {% if files|length_is:'0' %}
-        <h3>No files found.</h3>
+    {% if invalid == True %}
+        <h3>Invalid barcode.</h3>
     {% else %}
-        {% for file in files|dictsortreversed:"upload_time" %}
-            <div class="file {% if file.recent %}recent{% endif %}">
-                <div class="file-header ">
-                    <h3>File: {{ file.file }}</h3>
-                    <h4>Format: {% if file.format %}{{ file.format }}{% else %}Unknown{% endif %}</h4>
-                    <h4>Uploaded at: {{ file.upload_time }}</h4>
-                </div>
-                <input class="toggle-content" id="file{{ file.id }}" type="checkbox">
-                <label for="file{{ file.id }}">
-                    <span>&#9654; Expand</span>
-                    <span>&#9660; Collapse</span>
-                </label>
-                <div class="file-content">
-                    <table>
-                        <tr>
-                            {% for heading in file.headings %}
-                                <th>{{ heading }}</th>
-                            {% endfor %}
-                        </tr>
-                        {% for data in file.content %}
+        <div class="upload">
+            <form action="{% url "robox:upload_barcode" barcode %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <label for="id_file">File:</label>
+                <input id="id_file" name="file" type="file">
+                <input type="submit" value="submit">
+            </form>
+        </div>
+        {% if files|length_is:'0' %}
+            <h3>No files found.</h3>
+        {% else %}
+            {% for file in files|dictsortreversed:"upload_time" %}
+                <div class="file {% if file.recent %}recent{% endif %}">
+                    <div class="file-header ">
+                        <h3>File: {{ file.file }}</h3>
+                        <h4>Format: {% if file.format %}{{ file.format }}{% else %}Unknown{% endif %}</h4>
+                        <h4>Uploaded at: {{ file.upload_time }}</h4>
+                    </div>
+                    <input class="toggle-content" id="file{{ file.id }}" type="checkbox">
+                    <label for="file{{ file.id }}">
+                        <span>&#9654; Expand</span>
+                        <span>&#9660; Collapse</span>
+                    </label>
+                    <div class="file-content">
+                        <table>
                             <tr>
-                                {% for dataum in data %}
-                                    <td>{{ dataum }}</td>
+                                {% for heading in file.headings %}
+                                    <th>{{ heading }}</th>
                                 {% endfor %}
                             </tr>
-                        {% endfor %}
-                    </table>
+                            {% for data in file.content %}
+                                <tr>
+                                    {% for dataum in data %}
+                                        <td>{{ dataum }}</td>
+                                    {% endfor %}
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
                 </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
+        {% endif %}
     {% endif %}
 {% endblock %}
