@@ -32,3 +32,7 @@ h3, h4 {
     position: absolute;
     right: 0;
 }
+
+.upload h3 {
+    font-family: sans-serif;
+}

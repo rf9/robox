@@ -7,13 +7,14 @@
     {%  load staticfiles %}
     <link rel="stylesheet" type="text/css" href="{% static "robox/css/base.css" %}" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="{% static "robox/js/base.js" %}"></script>
     {% block links %}{% endblock %}
 </head>
 <body>
 <div class="nav-bar">
     <form id="search-box" action="{% url 'robox:search' %}">
-        <input type="text" name="barcode" placeholder="Barcode...">
-        <button type="submit">Search</button>
+        <input id='search-box-text-field' type="text" name="barcode" placeholder="Barcode...">
+        <button type="submit">Find</button>
     </form>
     <h1>Robox</h1>
     <a href="{% url 'robox:index' %}">Index</a>
