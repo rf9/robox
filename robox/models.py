@@ -1,18 +1,21 @@
 from datetime import timedelta
+import logging
 
 from django.db import models
 from django.db.transaction import atomic
 from django.utils import timezone
 from django.utils.datastructures import OrderedSet
 from django.utils.functional import cached_property
-import logging
+
 import parsing
+
+_logger = logging.getLogger(__name__)
 
 
 class File(models.Model):
     upload_time = models.DateTimeField(auto_now_add=True)
     barcode = models.CharField(max_length=50)
-    file = models.FileField(upload_to="data/")
+    file = models.FileField(upload_to="data/%Y/%m/%d/%H/")
     format = models.CharField(max_length=20, default="None")
 
     @cached_property
@@ -41,11 +44,13 @@ class File(models.Model):
         try:
             parsed_file = parsing.parse(self.file)
         except parsing.RoboxParsingError:
-            logger = logging.getLogger(__name__)
-            logger.info("File unparsed: "+self.file.path)
+            _logger.info("File unparsed: %s" % self.file.path)
         else:
             self.format = parsed_file['parser']
             self.save()
+
+            _logger.debug("File parsed: %s as %s" % (self.file.path, self.format))
+
             for data in parsed_file['data']:
                 entry = Entry.objects.create(file=self)
                 for key, value in data.items():

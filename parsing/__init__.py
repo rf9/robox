@@ -1,5 +1,6 @@
 from collections import namedtuple as _namedtuple, OrderedDict as _OrderedDict
 import importlib
+import logging
 import os
 
 __author__ = 'dr6'
@@ -7,6 +8,8 @@ __author__ = 'dr6'
 _Parser = _namedtuple('_Parser', 'desc parse accept')
 
 _PARSERS = _OrderedDict()
+
+_logger = logging.getLogger(__name__)
 
 
 def add_parser(p):
@@ -20,12 +23,11 @@ def add_parser(p):
     <tt>parse</tt> a function that accepts a django file object and yields
     lists of related key-value pairs parsed from the file
     """
-    print("Adding parser:", p.desc)
+    _logger.debug("Adding parser: %s" % p.desc)
     assert hasattr(p, 'desc')
     assert callable(p.accept)
     assert callable(p.parse)
     _PARSERS[p.desc] = p
-
 
 def make_and_add_parser(desc, parse_function, accept_function=None):
     """
