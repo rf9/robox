@@ -14,8 +14,9 @@
         <div class="upload">
             <form action="{% url "robox:upload_barcode" barcode %}" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                <label for="id_file">File:</label>
-                <input id="id_file" name="file" type="file">
+                <h3>Upload to {{ barcode }}</h3>
+                <label for="id_file">Files:</label>
+                <input id="id_file" name="file" type="file" multiple>
                 <input type="submit" value="submit">
             </form>
         </div>

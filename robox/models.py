@@ -15,7 +15,7 @@ _logger = logging.getLogger(__name__)
 class File(models.Model):
     upload_time = models.DateTimeField(auto_now_add=True)
     barcode = models.CharField(max_length=50)
-    file = models.FileField(upload_to="data/%Y/%m/%d/%H/")
+    file = models.FileField(upload_to="raw_files/%Y/%m/%d/%H/")
     format = models.CharField(max_length=20, default="None")
 
     @cached_property
@@ -55,6 +55,12 @@ class File(models.Model):
                 entry = Entry.objects.create(file=self)
                 for key, value in data.items():
                     MetaData.objects.create(entry=entry, key=key, value=value)
+
+    @atomic
+    def delete(self, using=None):
+        self.file.delete()
+
+        super(File, self).delete(using)
 
 
 class Entry(models.Model):

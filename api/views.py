@@ -1,13 +1,12 @@
 from django.core.exceptions import ValidationError
 from django.db.transaction import atomic
-
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django_extensions.db.fields import json
 
 from robox.forms import validate_barcode
 from robox.models import File
-from robox.views import upload_file
+from robox.views import upload_files
 
 
 def get_by_barcode(request, barcode):
@@ -36,7 +35,7 @@ def upload(request):
     try:
         validate_barcode(barcode)
 
-        database_files = [upload_file(barcode, file) for file in files.values()]
+        database_files = upload_files(barcode, [file for file in files.values()])
 
         response_data = {
             'barcode': barcode,

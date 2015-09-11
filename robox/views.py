@@ -1,3 +1,5 @@
+import logging
+
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.db import DatabaseError
@@ -9,6 +11,7 @@ from django.views.generic import FormView, DeleteView
 from robox.forms import UploadForm, validate_barcode
 from robox.models import File
 
+_logger = logging.getLogger(__name__)
 
 def index(request):
     files = File.objects.all().order_by('-upload_time')[:20]
@@ -32,13 +35,13 @@ class UploadView(FormView):
         files = self.request.FILES
         barcode = form.cleaned_data['barcode']
 
-        database_files = [upload_file(barcode, files.get(file_name)) for file_name in files.keys()]
+        database_files = upload_files(barcode, [file for file_key in files.keys() for file in files.getlist(file_key)])
 
         return HttpResponseRedirect(reverse('robox:view', kwargs={'barcode': database_files[0].barcode}))
 
 
 @atomic
-def upload_file(barcode, file):
+def upload_files(barcode, files):
     """
     Atomically uploads a file to the database and parses it.
     :param barcode: The barcode for the file to be uploaded to.
@@ -46,21 +49,25 @@ def upload_file(barcode, file):
     :return: The database model of the uploaded file.
     """
     barcode = barcode.upper()
-    try:
-        database_file = File.objects.create(
-            file=file,
-            barcode=barcode,
-        )
-        database_file.parse()
-    except DatabaseError as err:
-        try:
-            # noinspection PyUnboundLocalVariable
-            database_file.file.delete()
-        except NameError:
-            pass
-        raise err
+    database_files = []
 
-    return database_file
+    for file in files:
+        try:
+            database_file = File.objects.create(
+                file=file,
+                barcode=barcode,
+            )
+            database_file.parse()
+            database_files.append(database_file)
+        except DatabaseError as err:
+            try:
+                # noinspection PyUnboundLocalVariable
+                database_file.file.delete()
+            except NameError:
+                pass
+            raise err
+
+    return database_files
 
 
 def view_by_barcode(request, barcode):
@@ -77,7 +84,7 @@ def view_by_barcode(request, barcode):
 def upload_by_barcode(request, barcode):
     files = request.FILES
 
-    database_files = [upload_file(barcode, files.get(file_name)) for file_name in files.keys()]
+    database_files = upload_files(barcode, [file for file_key in files.keys() for file in files.getlist(file_key)])
 
     return HttpResponseRedirect(reverse('robox:view', kwargs={'barcode': database_files[0].barcode}))
 

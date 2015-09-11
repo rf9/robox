@@ -1,3 +1,7 @@
 form {
     display: inline;
 }
+
+form div {
+    margin-bottom: 10px;
+}
