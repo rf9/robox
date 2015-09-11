@@ -105,3 +105,35 @@ STATIC_URL = '/static/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "files")
 MEDIA_URL = '/media/'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+            'datefmt': "%Y-%m-%d %H:%M:%S",
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s',
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'robox.log',
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'robox': {
+            'handlers': ['file'],
+            'level': 'INFO',
+        },
+        'django': {
+            'handlers': ['file'],
+            'level': 'WARNING',
+        }
+    },
+}

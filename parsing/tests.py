@@ -1,14 +1,15 @@
 import os
 
 from django.test import TestCase
-from parsing import parsers
+
+from parsing import _PARSERS
 
 __author__ = 'rf9'
 
 
 class ParserTest(TestCase):
     def test_parsers_have_been_added(self):
-        self.assertGreater(len(parsers._PARSERS), 0)
+        self.assertGreater(len(_PARSERS), 0)
 
 
 class AbstractClasses:
@@ -39,7 +40,7 @@ class AbstractClasses:
 
 class IscParserTest(AbstractClasses.ParserTestMixin):
     def setUp(self):
-        self.parser = parsers._PARSERS['isc']
+        self.parser = _PARSERS['isc']
         file_path = os.path.join(os.path.dirname(__file__),
                                  "testFiles/Caliper2_402755_ISC_1_5_2015-06-30_07-44-47_WellTable.csv")
         with open(file_path, 'r') as fin:
@@ -59,7 +60,7 @@ class IscParserTest(AbstractClasses.ParserTestMixin):
 
 class WgsParserTest(AbstractClasses.ParserTestMixin):
     def setUp(self):
-        self.parser = parsers._PARSERS['wgs']
+        self.parser = _PARSERS['wgs']
         file_path = os.path.join(os.path.dirname(__file__),
                                  "testFiles/Caliper1_411359_PATH_1_3_2015-08-18_01-24-42_WellTable.csv")
         with open(file_path, 'r') as fin:
@@ -79,7 +80,7 @@ class WgsParserTest(AbstractClasses.ParserTestMixin):
 
 class XTenParserTest(AbstractClasses.ParserTestMixin):
     def setUp(self):
-        self.parser = parsers._PARSERS['xTen']
+        self.parser = _PARSERS['xTen']
         self.accepted_file = os.path.join(os.path.dirname(__file__),
                                           "testFiles/DN_DSS1_BR_PCRXP_Assay.xlsx")
         self.expected_headings = ['address', 'name', 'units', 'value']

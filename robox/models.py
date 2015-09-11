@@ -5,6 +5,7 @@ from django.db.transaction import atomic
 from django.utils import timezone
 from django.utils.datastructures import OrderedSet
 from django.utils.functional import cached_property
+import logging
 import parsing
 
 
@@ -40,7 +41,8 @@ class File(models.Model):
         try:
             parsed_file = parsing.parse(self.file)
         except parsing.RoboxParsingError:
-            pass
+            logger = logging.getLogger(__name__)
+            logger.info("File unparsed: "+self.file.path)
         else:
             self.format = parsed_file['parser']
             self.save()
