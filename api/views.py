@@ -1,7 +1,9 @@
 from django.core.exceptions import ValidationError
 from django.db.transaction import atomic
 from django.http import HttpResponse
+
 from django.views.decorators.csrf import csrf_exempt
+
 from django_extensions.db.fields import json
 
 from robox.forms import validate_barcode
@@ -16,7 +18,7 @@ def get_by_barcode(request, barcode):
         barcode = barcode.upper()
         response_data = {
             'barcode': barcode,
-            'files': [serialise_file(file) for file in File.objects.filter(barcode=barcode)],
+            'files': [serialise_file(file, request) for file in File.objects.filter(barcode=barcode)],
         }
 
         return HttpResponse(json.dumps(response_data), content_type='application/json')
@@ -39,7 +41,7 @@ def upload(request):
 
         response_data = {
             'barcode': barcode,
-            'files': [serialise_file(file) for file in database_files],
+            'files': [serialise_file(file, request) for file in database_files],
         }
 
         return HttpResponse(json.dumps(response_data), content_type='application/json')
@@ -49,11 +51,11 @@ def upload(request):
                             status=422)
 
 
-def serialise_file(file):
+def serialise_file(file, request=None):
     file_json = {
         'upload_time': file.upload_time,
         'file_type': file.format,
-        'file': file.file.url,
+        'file': request.build_absolute_uri(file.file.url) if request else file.file.url,
         'data': [],
     }
 

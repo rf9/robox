@@ -16,16 +16,16 @@
 >>>		{
 >>>			"barcode": "barcode",
 >>>			"files": [
->>>	       	{
->>>	           	"upload_time": "datetime",
->>>	           	"data": [
+>>>				{
+>>>					"upload_time": "datetime",
+>>>					"file_type": "string",
+>>>					"file": "urlpath",
+>>>					"data": [
 >>>	             		{
->>>	                 	"key": "value",
->>>	               	}
+>>>							"key": "value",
+>>>						},
 >>>					],
->>>	           	"file_type": "string",
->>>	           	"file": "urlpath",
->>>	       	}
+>>>				},
 >>>	   		],
 >>>		}
 >>>
@@ -33,45 +33,45 @@
 >>>
 >>>		
 >>>		{
->>>			"barcode": "ABC001",
+>>>			"barcode": "2000001992852",
 >>>	   		"files": [
->>>	       	{
->>>	          	"upload_time": "2015-09-09T12:14:05.350Z",
->>>	            	"data": [
+>>>				{
+>>>					"upload_time": "2015-09-11T13:55:28.475Z",
+>>>					"file_type": "isc",
+>>>					"file": "http://127.0.0.1:8000/media/raw_files/2000001992852/Caliper3_410370_ISC_1_5_2015-07-31_09-35-37_WellTable.csv"
+>>>					"data": [
 >>>	             		{
->>>	                 	"value": "48.8164672349381",
->>>	                    "address": "A1",
->>>	                    "units": "nM",
->>>	                    "name": "concentration"
->>>	                },
->>>	                {
->>>	                    "value": "33.33333333333333",
->>>	                    "address": "A1",
->>>	                    "units": "%",
->>>	                    "name": "dilution"
->>>	                },
->>>	                {
->>>	                    "value": "54.134358195761",
->>>	                    "address": "B1",
->>>	                    "units": "nM",
->>>	                    "name": "concentration"
->>>	                },
->>>	                {
->>>	                    "value": "33.33333333333333",
->>>	                    "address": "B1",
->>>	                    "units": "%",
->>>	                    "name": "dilution"
->>>	                }
->>>	            ],
->>>	            "file_type": "wgs",
->>>	            "file": "/media/data/Caliper1_411709_PATH_1_3_2015-08-18_01-24-55_WellTable_neqrdbc.csv"
->>>	        }
+>>>							"value": "48.8164672349381",
+>>>							"address": "A1",
+>>>							"units": "nM",
+>>>							"name": "concentration"
+>>>						},
+>>>						{
+>>>							"value": "33.33333333333333",
+>>>							"address": "A1",
+>>>							"units": "%",
+>>>							"name": "dilution"
+>>>						},
+>>>						{
+>>>							"value": "54.134358195761",
+>>>							"address": "B1",
+>>>							"units": "nM",
+>>>							"name": "concentration"
+>>>						},
+>>>						{
+>>>							"value": "33.33333333333333",
+>>>							"address": "B1",
+>>>							"units": "%",
+>>>							"name": "dilution"
+>>>						}
+>>>					],
+>>>				}
 >>>	    	],
 >>>		}
 >>>>
 >>>
 >>>		{
->>>			"barcode": "ABC002",
+>>>			"barcode": "2000001992852",
 >>>	    	"files": [],	    
 >>>		}
 >>
@@ -85,14 +85,14 @@
 >>>
 >>>		{
 >>>	    	"error": "message",
->>>	    	"barcode": "barcode"
+>>>	    	"barcode": "barcode",
 >>>		}
 >>>	
 >>>Example:
 >>>
 >>>		{
 >>>	    	"error": "Invalid barcode",
->>>	    	"barcode": "123456789"
+>>>	    	"barcode": "123456789",
 >>>		}
 >>>	 
        
@@ -134,58 +134,58 @@
 >>>Format:
 >>>
 >>>		{
->>>	    	"files": [
->>>	       	{
->>>	          	"upload_time": "datetime",
->>>	            	"data": [
->>>	             		{
->>>	                 	"key": "value"
->>>	                	}
->>>	          	],
->>>	            	"file_type": "string",
->>>	            	"file": "urlpath"
->>>	        	}
->>>	    	],
->>>	    	"barcode": "barcode"
+>>>			"barcode": "barcode",
+>>>			"files": [
+>>>				{
+>>>					"file_type": "string",
+>>>					"file": "urlpath",
+>>>					"upload_time": "datetime",
+>>>					"data": [
+>>>						{
+>>>							"key": "value"
+>>>						},
+>>>					],
+>>>				},
+>>>			],
 >>>		}
 >>>	
 >>>Example:
 >>>
 >>>		{
->>>	   		"files": [
->>>	       	{
->>>	          	"upload_time": "2015-09-09T12:14:05.350Z",
->>>	            	"data": [
->>>	             		{
->>>	                 	"value": "48.8164672349381",
->>>	                    "address": "A1",
->>>	                    "units": "nM",
->>>	                    "name": "concentration"
->>>	                },
->>>	                {
->>>	                    "value": "33.33333333333333",
->>>	                    "address": "A1",
->>>	                    "units": "%",
->>>	                    "name": "dilution"
->>>	                },
->>>	                {
->>>	                    "value": "54.134358195761",
->>>	                    "address": "B1",
->>>	                    "units": "nM",
->>>	                    "name": "concentration"
->>>	                },
->>>	                {
->>>	                    "value": "33.33333333333333",
->>>	                    "address": "B1",
->>>	                    "units": "%",
->>>	                    "name": "dilution"
->>>	                }
->>>	            ],
->>>	            "file_type": "wgs",
->>>	            "file": "/media/data/Caliper1_411709_PATH_1_3_2015-08-18_01-24-55_WellTable_neqrdbc.csv"
->>>	       	}
->>>	    	],
->>>	    	"barcode": "ABC001"
+>>>			"barcode": "2000001992852",
+>>>			"files": [
+>>>				{
+>>>					"upload_time": "2015-09-09T12:14:05.350Z",
+>>>					"file_type": "wgs",
+>>>					"file": "http://127.0.0.1:8000/media/raw_files/2000001992852/Caliper3_410370_ISC_1_5_2015-07-31_09-35-37_WellTable.csv",
+>>>					"data": [
+>>>						{
+>>>							"value": "48.8164672349381",
+>>>							"address": "A1",
+>>>							"units": "nM",
+>>>							"name": "concentration"
+>>>						},
+>>>						{
+>>>							"value": "33.33333333333333",
+>>>							"address": "A1",
+>>>							"units": "%",
+>>>							"name": "dilution"
+>>>						},
+>>>						{
+>>>							"value": "54.134358195761",
+>>>							"address": "B1",
+>>>							"units": "nM",
+>>>							"name": "concentration"
+>>>						},
+>>>						{
+>>>							"value": "33.33333333333333",
+>>>							"address": "B1",
+>>>							"units": "%",
+>>>							"name": "dilution"
+>>>						},
+>>>					],
+>>>				},
+>>>			],
 >>>		}
 >>
 >>Error:
@@ -198,13 +198,13 @@
 >>>
 >>>		{
 >>>	   		"error": "message",
->>>	   		"barcode": "barcode"
+>>>	   		"barcode": "barcode",
 >>>		}
 >>>	
 >>>Example:
 >>>
 >>>		{
 >>>	    	"error": "Invalid barcode",
->>>	    	"barcode": "123456789"
+>>>	    	"barcode": "123456789",
 >>>		}
                     
