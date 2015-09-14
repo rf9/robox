@@ -8,7 +8,7 @@ _logger = logging.getLogger(__name__)
 
 class BarcodeField(forms.Field):
     def to_python(self, value):
-        return value.upper()
+        return value
 
     def validate(self, value):
         validate_barcode(value)

@@ -13,6 +13,7 @@ from robox.models import File
 
 _logger = logging.getLogger(__name__)
 
+
 def index(request):
     files = File.objects.all().order_by('-upload_time')[:20]
 
@@ -48,7 +49,7 @@ def upload_files(barcode, files):
     :param file: The Django file to be uploaded
     :return: The database model of the uploaded file.
     """
-    barcode = barcode.upper()
+    barcode = barcode
     database_files = []
 
     for file in files:
@@ -71,7 +72,7 @@ def upload_files(barcode, files):
 
 
 def view_by_barcode(request, barcode):
-    barcode = barcode.upper()
+    barcode = barcode
     try:
         validate_barcode(barcode)
         files = File.objects.filter(barcode=barcode)

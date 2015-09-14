@@ -1,24 +1,32 @@
+import os
+
+from django.core.files.uploadedfile import UploadedFile
 from django.db import IntegrityError, DatabaseError
 from django.test import TransactionTestCase
 import mock
+
+from mainsite import settings
 
 from robox.models import File, Entry, MetaData
 
 
 class TransactionTestRollBack(TransactionTestCase):
-    @mock.patch('parsers.parsing.parse', return_value={'parser': "fake_parser", "data": ["data"]})
+    @mock.patch('parsing.parse', return_value={'parser': "fake_parser", "data": [{'key': "value"}]})
     @mock.patch('robox.models.Entry.objects.create', side_effect=IntegrityError)
     def setUp(self, *save_mock):
         super(TransactionTestRollBack, self).setUp()
 
         try:
-            self.file = File.objects.create()
+            with open(os.path.join(settings.BASE_DIR,
+                                   "parsing/testFiles/Caliper1_411359_PATH_1_3_2015-08-18_01-24-42_WellTable.csv"),
+                      'rb') as f:
+                self.file = File.objects.create(barcode="fake_barcode", file=UploadedFile(file=f))
             self.file.parse()
             self.exception = None
         except DatabaseError as err:
             self.exception = err
 
-        self.file.refresh_from_db()
+        self.file = File.objects.get(pk=self.file.pk)
 
     def test_that_file_was_created(self):
         self.assertIsNotNone(self.file)
@@ -32,17 +40,26 @@ class TransactionTestRollBack(TransactionTestCase):
     def test_no_objects_were_created(self):
         self.assertEqual(0, Entry.objects.count())
 
+    def tearDown(self):
+        self.file.delete()
+
 
 class TransactionTestCommit(TransactionTestCase):
-    @mock.patch('parsers.parsing.parse', return_value={'parser': "fake_parser", "data": [{'key': "value"}]})
+    @mock.patch('parsing.parse', return_value={'parser': "fake_parser", "data": [{'key': "value"}]})
     def setUp(self, *save_mock):
         super(TransactionTestCommit, self).setUp()
-        self.file = File.objects.create()
+
         try:
+            with open(os.path.join(settings.BASE_DIR,
+                                   "parsing/testFiles/Caliper1_411359_PATH_1_3_2015-08-18_01-24-42_WellTable.csv"),
+                      'rb') as f:
+                self.file = File.objects.create(barcode="fake_barcode", file=UploadedFile(file=f))
             self.file.parse()
             self.exception = None
         except Exception as err:
             self.exception = err
+
+        self.file = File.objects.get(pk=self.file.pk)
 
     def test_that_file_was_created(self):
         self.assertIsNotNone(self.file)
@@ -61,3 +78,6 @@ class TransactionTestCommit(TransactionTestCase):
         data = MetaData.objects.all()[0]
         self.assertEqual("key", data.key)
         self.assertEqual('value', data.value)
+
+    def tearDown(self):
+        self.file.delete()

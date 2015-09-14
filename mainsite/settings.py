@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'robox',
     'docs',
+    'api',
 )
 
 MIDDLEWARE_CLASSES = (
