@@ -34,7 +34,7 @@ class AbstractClasses:
             self.assertEqual(sorted(headings), self.expected_headings)
 
         def test_parsed_data_is_correct(self):
-            for actual_entry, expected_entry, index in zip(self.parsed_data, self.expected_data, range(100)):
+            for index, (actual_entry, expected_entry) in enumerate(zip(self.parsed_data, self.expected_data)):
                 self.assertEqual(expected_entry, actual_entry, msg="Line " + str(index))
 
 
