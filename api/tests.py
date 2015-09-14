@@ -58,19 +58,21 @@ def mock_return(value):
     return str(value)
 
 
-class APIPostTests(TestCase):
+class APIPostTestsValidBarcode(TestCase):
     barcode = "0000000000000"
 
     @mock.patch('django_extensions.db.fields.json.dumps', side_effect=mock_return)
-    def test_with_valid_barcode(self, *save_mock):
-        file_count = File.objects.filter(barcode=self.barcode).count()
+    def setUp(self, *save_mock):
+        self.file_count = File.objects.filter(barcode=self.barcode).count()
 
         with open(os.path.join(settings.BASE_DIR,
                                "parsing/testFiles/Caliper1_411359_PATH_1_3_2015-08-18_01-24-42_WellTable.csv"),
                   'rb') as f:
-            api_results = upload(MagicMock(FILES={"any": UploadedFile(file=f)}, REQUEST={"barcode": self.barcode}))
-        self.assertEqual(200, api_results.status_code)
-        content = literal_eval(api_results.content.decode("ascii"))
+            self.api_results = upload(MagicMock(FILES={"any": UploadedFile(file=f)}, REQUEST={"barcode": self.barcode}))
+
+    def test_correct_response_data(self):
+        self.assertEqual(200, self.api_results.status_code)
+        content = literal_eval(self.api_results.content.decode("ascii"))
 
         self.assertEqual(self.barcode, content["barcode"])
         self.assertEqual(list, type(content['files']))
@@ -81,19 +83,34 @@ class APIPostTests(TestCase):
         self.assertTrue('file' in file)
         self.assertTrue('file_type' in file)
 
+    def test_file_added_to_database(self):
         files = File.objects.filter(barcode=self.barcode)
-        self.assertEqual(file_count + 1, files.count())
+        self.assertEqual(self.file_count + 1, files.count())
 
-    def test_with_invalid_barcode(self):
-        api_results = upload(MagicMock(FILES=None, REQUEST={"barcode": 'fake_barcode'}))
-        self.assertEqual(422, api_results.status_code)
-
-        content = json.loads(api_results.content.decode("ascii"))
-
-        self.assertEqual("fake_barcode", content['barcode'])
-        self.assertEqual('Invalid barcode', content['error'])
+        file = files[self.file_count]
+        self.assertEqual(self.barcode, file.barcode)
+        self.assertEqual("wgs", file.format)
+        self.assertGreater(file.entry_set.count(), 0)
 
     def tearDown(self):
         files = File.objects.filter(barcode=self.barcode)
         for file in files:
             file.delete()
+
+
+class APIPostTestsInvalidBarcode(TestCase):
+    barcode = 'fake_barcode'
+
+    def setUp(self):
+        self.api_results = upload(MagicMock(FILES=None, REQUEST={"barcode": self.barcode}))
+
+    def test_correct_response_data(self):
+        self.assertEqual(422, self.api_results.status_code)
+
+        content = json.loads(self.api_results.content.decode("ascii"))
+
+        self.assertEqual(self.barcode, content['barcode'])
+        self.assertEqual('Invalid barcode', content['error'])
+
+    def test_not_added_to_database(self):
+        self.assertEqual(0, File.objects.filter(barcode=self.barcode).count())
