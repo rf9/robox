@@ -144,7 +144,7 @@ LOGGING = {
         },
         'django': {
             'handlers': ['file'],
-            'level': 'WARNING',
+            'level': 'ERROR',
         }
     },
 }
