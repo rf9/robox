@@ -80,6 +80,8 @@ def upload_files(barcode, files):
         channel.basic_publish(exchange='',
                               routing_key='upload_notifier',
                               body=json.dumps({"barcode": barcode, "file_count": len(database_files)}))
+
+        connection.close()
         _logger.debug("Sent message to message queue.")
     except ConnectionClosed:
         _logger.warning("rabbitmq server not responding.")
