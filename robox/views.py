@@ -1,4 +1,5 @@
 import logging
+import json
 
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse, reverse_lazy
@@ -7,6 +8,9 @@ from django.db.transaction import atomic
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.views.generic import FormView, DeleteView
+import pika
+
+from pika.exceptions import ConnectionClosed
 
 from robox.forms import UploadForm, validate_barcode
 from robox.models import File
@@ -46,7 +50,7 @@ def upload_files(barcode, files):
     """
     Atomically uploads a file to the database and parses it.
     :param barcode: The barcode for the file to be uploaded to.
-    :param file: The Django file to be uploaded
+    :param files: The Django files to be uploaded
     :return: The database model of the uploaded file.
     """
     barcode = barcode
@@ -67,6 +71,18 @@ def upload_files(barcode, files):
             except NameError:
                 pass
             raise err
+
+    try:
+        connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
+        channel = connection.channel()
+        channel.queue_declare(queue="upload_notifier")
+
+        channel.basic_publish(exchange='',
+                              routing_key='upload_notifier',
+                              body=json.dumps({"barcode": barcode, "file_count": len(database_files)}))
+        _logger.debug("Sent message to message queue.")
+    except ConnectionClosed:
+        _logger.warning("rabbitmq server not responding.")
 
     return database_files
 
