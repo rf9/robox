@@ -20,19 +20,12 @@ def validate_barcode(barcode):
     :raises ValidationError: if barcode is not valid.
     :param barcode: The barcode to be validated
     """
-
-    if barcode.isdigit() and len(barcode) == 13:
+    if len(barcode)==13 and barcode.isdigit():
         # EAN13
-        checksum = 0
-        for i in range(12):
-            if i % 2 == 0:
-                checksum += int(barcode[i])
-            else:
-                checksum += int(barcode[i]) * 3
-
-        if ((10 - checksum) % 10) == int(barcode[12]):
+        total = sum(int(ch)*(1+2*(i&1)) for i,ch in enumerate(barcode[:-1]))
+        checksum = (10-total)%10
+        if str(checksum)==barcode[-1]:
             return
-
     raise ValidationError("Invalid barcode")
 
 
