@@ -7,7 +7,7 @@ from django.utils import timezone
 from django.utils.datastructures import OrderedSet
 from django.utils.functional import cached_property
 
-import parsing
+from robox import parsing
 
 _logger = logging.getLogger(__name__)
 

@@ -9,7 +9,6 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.views.generic import FormView, DeleteView
 import pika
-
 from pika.exceptions import ConnectionClosed
 
 from robox.forms import UploadForm, validate_barcode
@@ -21,19 +20,19 @@ _logger = logging.getLogger(__name__)
 def index(request):
     files = File.objects.all().order_by('-upload_time')[:20]
 
-    return render(request, "robox/index.html", {"files": files})
+    return render(request, "robox/robox/index.html", {"files": files})
 
 
 def search(request):
     barcode = request.GET.get('barcode')
     if barcode:
-        return HttpResponseRedirect(reverse('robox:view', kwargs={'barcode': barcode}))
+        return HttpResponseRedirect(reverse('view', kwargs={'barcode': barcode}))
     else:
-        return HttpResponseRedirect(reverse('robox:index'))
+        return HttpResponseRedirect(reverse('index'))
 
 
 class UploadView(FormView):
-    template_name = "robox/upload.html"
+    template_name = "robox/robox/upload.html"
     form_class = UploadForm
 
     def form_valid(self, form):
@@ -42,7 +41,7 @@ class UploadView(FormView):
 
         database_files = upload_files(barcode, [file for file_key in files.keys() for file in files.getlist(file_key)])
 
-        return HttpResponseRedirect(reverse('robox:view', kwargs={'barcode': database_files[0].barcode}))
+        return HttpResponseRedirect(reverse('view', kwargs={'barcode': database_files[0].barcode}))
 
 
 @atomic
@@ -95,9 +94,9 @@ def view_by_barcode(request, barcode):
         validate_barcode(barcode)
         files = File.objects.filter(barcode=barcode)
 
-        return render(request, "robox/view.html", {'files': files, 'barcode': barcode})
+        return render(request, "robox/robox/view.html", {'files': files, 'barcode': barcode})
     except ValidationError:
-        return render(request, "robox/view.html", {'invalid': True, 'barcode': barcode})
+        return render(request, "robox/robox/view.html", {'invalid': True, 'barcode': barcode})
 
 
 def upload_by_barcode(request, barcode):
@@ -105,9 +104,9 @@ def upload_by_barcode(request, barcode):
 
     database_files = upload_files(barcode, [file for file_key in files.keys() for file in files.getlist(file_key)])
 
-    return HttpResponseRedirect(reverse('robox:view', kwargs={'barcode': database_files[0].barcode}))
+    return HttpResponseRedirect(reverse('view', kwargs={'barcode': database_files[0].barcode}))
 
 
 class FileDelete(DeleteView):
     model = File
-    success_url = reverse_lazy('robox:index')
+    success_url = reverse_lazy('index')

@@ -4,13 +4,13 @@ import os
 
 from django.core.files.uploadedfile import UploadedFile
 from django.test import TestCase
+
 from mock import MagicMock
 import mock
 
-from api.views import get_by_barcode, upload
 from mainsite import settings
-
 from robox.models import File
+from robox.views.api import get_by_barcode, upload
 
 
 class APIGetTests(TestCase):
@@ -18,7 +18,7 @@ class APIGetTests(TestCase):
 
     def setUp(self):
         with open(os.path.join(settings.BASE_DIR,
-                               "parsing/testFiles/Caliper1_411359_PATH_1_3_2015-08-18_01-24-42_WellTable.csv"),
+                               "robox/tests/testfiles/Caliper1_411359_PATH_1_3_2015-08-18_01-24-42_WellTable.csv"),
                   'rb') as f:
             self.file = File.objects.create(barcode=self.barcode, file=UploadedFile(file=f))
         self.file.parse()
@@ -66,7 +66,7 @@ class APIPostTestsValidBarcode(TestCase):
         self.file_count = File.objects.filter(barcode=self.barcode).count()
 
         with open(os.path.join(settings.BASE_DIR,
-                               "parsing/testFiles/Caliper1_411359_PATH_1_3_2015-08-18_01-24-42_WellTable.csv"),
+                               "robox/tests/testfiles/Caliper1_411359_PATH_1_3_2015-08-18_01-24-42_WellTable.csv"),
                   'rb') as f:
             self.api_results = upload(MagicMock(FILES={"any": UploadedFile(file=f)}, REQUEST={"barcode": self.barcode}))
 

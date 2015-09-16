@@ -5,21 +5,21 @@
     <title>{% block title %}{% endblock %}</title>
 
     {%  load staticfiles %}
-    <link rel="stylesheet" type="text/css" href="{% static "robox/css/base.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "robox/robox/css/base.css" %}"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-    <script src="{% static "robox/js/base.js" %}"></script>
+    <script src="{% static "robox/robox/js/base.js" %}"></script>
     {% block links %}{% endblock %}
 </head>
 <body>
 <div class="nav-bar">
-    <form id="search-box" action="{% url 'robox:search' %}">
+    <form id="search-box" action="{% url 'search' %}">
         <input id='search-box-text-field' type="text" name="barcode" placeholder="Barcode...">
         <button type="submit">Find</button>
     </form>
     <h1>Robox</h1>
-    <a href="{% url 'robox:index' %}">Index</a>
-    <a href="{% url 'robox:upload' %}">Upload</a>
-    <a href="{% url 'docs:index' %}">Documentation</a>
+    <a href="{% url 'index' %}">Index</a>
+    <a href="{% url 'upload' %}">Upload</a>
+    <a href="{% url 'docs_index' %}">Documentation</a>
 </div>
 <div class="heading">
     <h2>{% block heading %}{% endblock %}</h2>

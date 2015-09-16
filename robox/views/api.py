@@ -6,7 +6,7 @@ from django_extensions.db.fields import json
 
 from robox.forms import validate_barcode
 from robox.models import File
-from robox.views import upload_files
+from robox.views.robox import upload_files
 
 
 def get_by_barcode(request, barcode):

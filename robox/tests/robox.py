@@ -12,14 +12,14 @@ from robox.models import File, Entry, MetaData
 
 
 class FileParseTestFail(TransactionTestCase):
-    @mock.patch('parsing.parse', return_value={'parser': "fake_parser", "data": [{'key': "value"}]})
+    @mock.patch('robox.parsing.parse', return_value={'parser': "fake_parser", "data": [{'key': "value"}]})
     @mock.patch('robox.models.Entry.objects.create', side_effect=IntegrityError)
     def setUp(self, *save_mock):
         super(FileParseTestFail, self).setUp()
 
         try:
             with open(os.path.join(settings.BASE_DIR,
-                                   "parsing/testFiles/Caliper1_411359_PATH_1_3_2015-08-18_01-24-42_WellTable.csv"),
+                                   "robox/tests/testfiles/Caliper1_411359_PATH_1_3_2015-08-18_01-24-42_WellTable.csv"),
                       'rb') as f:
                 self.file = File.objects.create(barcode="fake_barcode", file=UploadedFile(file=f))
             self.file.parse()
@@ -46,13 +46,13 @@ class FileParseTestFail(TransactionTestCase):
 
 
 class FileParseTestSuccess(TransactionTestCase):
-    @mock.patch('parsing.parse', return_value={'parser': "fake_parser", "data": [{'key': "value"}]})
+    @mock.patch('robox.parsing.parse', return_value={'parser': "fake_parser", "data": [{'key': "value"}]})
     def setUp(self, *save_mock):
         super(FileParseTestSuccess, self).setUp()
 
         try:
             with open(os.path.join(settings.BASE_DIR,
-                                   "parsing/testFiles/Caliper1_411359_PATH_1_3_2015-08-18_01-24-42_WellTable.csv"),
+                                   "robox/tests/testFiles/Caliper1_411359_PATH_1_3_2015-08-18_01-24-42_WellTable.csv"),
                       'rb') as f:
                 self.file = File.objects.create(barcode="fake_barcode", file=UploadedFile(file=f))
             self.file.parse()
@@ -92,7 +92,7 @@ class UploadTestSuccess(LiveServerTestCase):
         self.driver.get(self.live_server_url)
 
     def test_file_was_uploaded_and_parsed(self):
-        self.driver.get(self.live_server_url + reverse('robox:view', args=[self.barcode]))
+        self.driver.get(self.live_server_url + reverse('view', args=[self.barcode]))
 
         headers = self.driver.find_elements_by_class_name("file-header")
         contents = self.driver.find_elements_by_class_name("file-contents")
@@ -104,7 +104,7 @@ class UploadTestSuccess(LiveServerTestCase):
 
         self.driver.find_element_by_id("id_barcode").send_keys(self.barcode)
         self.driver.find_element_by_id("id_file").send_keys(os.path.join(settings.BASE_DIR,
-                                                                         "parsing/testFiles/Caliper1_411359_PATH_1_3_2015-08-18_01-24-42_WellTable.csv"))
+                                                                         "robox/tests/testFiles/Caliper1_411359_PATH_1_3_2015-08-18_01-24-42_WellTable.csv"))
 
         self.driver.find_element_by_id('id_barcode').submit()
 
@@ -137,7 +137,7 @@ class UploadTestInvalidBarcode(LiveServerTestCase):
 
         self.driver.find_element_by_id("id_barcode").send_keys(self.barcode)
         self.driver.find_element_by_id("id_file").send_keys(os.path.join(settings.BASE_DIR,
-                                                                         "parsing/testFiles/Caliper1_411359_PATH_1_3_2015-08-18_01-24-42_WellTable.csv"))
+                                                                         "robox/tests/testFiles/Caliper1_411359_PATH_1_3_2015-08-18_01-24-42_WellTable.csv"))
 
         self.driver.find_element_by_id('id_barcode').submit()
 

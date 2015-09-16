@@ -1,18 +1,18 @@
-{% extends 'robox/base_generic.html' %}
+{% extends 'robox/robox/../base_generic.html' %}
 
 {% block title %}Viewing: {{ barcode }}{% endblock %}
 {% block heading %}Viewing: {{ barcode }}{% endblock %}
 {% block links %}
     {% load staticfiles %}
-    <link rel="stylesheet" href="{% static "robox/css/view.css" %}" />
-    <script src="{% static "robox/js/view.js" %}"></script>
+    <link rel="stylesheet" href="{% static "robox/robox/css/view.css" %}"/>
+    <script src="{% static "robox/robox/js/view.js" %}"></script>
 {% endblock %}
 {% block content %}
     {% if invalid == True %}
         <h3>Invalid barcode.</h3>
     {% else %}
         <div class="upload">
-            <form action="{% url "robox:upload_barcode" barcode %}" method="post" enctype="multipart/form-data">
+            <form action="{% url "upload_barcode" barcode %}" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <h3>Upload to {{ barcode }}</h3>
                 <label for="id_file">Files:</label>

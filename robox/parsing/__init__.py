@@ -70,7 +70,7 @@ def get_parsers(file_to_parse=None):
 
 for module in os.listdir(os.path.join(os.path.dirname(__file__), "parsers")):
     if module.endswith('.py') and module[0] not in '._':
-        importlib.import_module('parsing.parsers.' + module[:-3])
+        importlib.import_module('robox.parsing.parsers.' + module[:-3])
 
 
 class RoboxParsingError(Exception):

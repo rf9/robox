@@ -39,8 +39,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'robox',
-    'docs',
-    'api',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -136,10 +134,6 @@ LOGGING = {
     'loggers': {
         'robox': {
             'handlers': ['file', 'console'],
-            'level': 'DEBUG',
-        },
-        'parsing': {
-            'handlers': ['console'],
             'level': 'DEBUG',
         },
         'django': {
