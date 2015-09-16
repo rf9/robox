@@ -1,10 +1,10 @@
-{% extends 'robox/robox/../base_generic.html' %}
+{% extends 'robox/base_generic.html' %}
 
 {% block title %}Index{% endblock %}
 {% block heading %}Latest {{ files.count }} files:{% endblock %}
 {% block links %}
     {% load staticfiles %}
-    <link rel="stylesheet" type="text/css" href="{% static "robox/robox/css/index.css" %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static "robox/web/css/index.css" %}"/>
 {% endblock %}
 {% block content %}
     <table>

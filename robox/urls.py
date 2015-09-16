@@ -1,15 +1,15 @@
 from django.conf.urls import url
 from django.views.generic import RedirectView
 
-from robox.views import robox, api, docs
+from robox.views import web, api, docs
 
 urlpatterns = [
-    url(r'^upload/$', robox.UploadView.as_view(), name="upload"),
-    url(r'^view/(?P<barcode>\S+)/$', robox.view_by_barcode, name="view"),
-    url(r'^upload/(?P<barcode>\S+)/$', robox.upload_by_barcode, name="upload_barcode"),
-    url(r'^view/$', robox.index, name="index"),
-    url(r'^delete/(?P<pk>[0-9]+)/$', robox.FileDelete.as_view(), name='delete_file'),
-    url(r'^search/$', robox.search, name="search"),
+    url(r'^upload/$', web.UploadView.as_view(), name="upload"),
+    url(r'^view/(?P<barcode>\S+)/$', web.view_by_barcode, name="view"),
+    url(r'^upload/(?P<barcode>\S+)/$', web.upload_by_barcode, name="upload_barcode"),
+    url(r'^view/$', web.index, name="index"),
+    url(r'^delete/(?P<pk>[0-9]+)/$', web.FileDelete.as_view(), name='delete_file'),
+    url(r'^search/$', web.search, name="search"),
     url(r'^$', RedirectView.as_view(url='/view/', permanent=True)),
 
     url(r'^api/barcode/(?P<barcode>\S+)/$', api.get_by_barcode, name="api_barcode"),

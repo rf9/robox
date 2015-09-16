@@ -1,11 +1,11 @@
-{% extends 'robox/robox/../base_generic.html' %}
+{% extends 'robox/base_generic.html' %}
 
 {% block title %}Viewing: {{ barcode }}{% endblock %}
 {% block heading %}Viewing: {{ barcode }}{% endblock %}
 {% block links %}
     {% load staticfiles %}
-    <link rel="stylesheet" href="{% static "robox/robox/css/view.css" %}"/>
-    <script src="{% static "robox/robox/js/view.js" %}"></script>
+    <link rel="stylesheet" href="{% static "robox/web/css/view.css" %}"/>
+    <script src="{% static "robox/web/js/view.js" %}"></script>
 {% endblock %}
 {% block content %}
     {% if invalid == True %}

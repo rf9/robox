@@ -4,9 +4,8 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django_extensions.db.fields import json
 
-from robox.forms import validate_barcode
 from robox.models import File
-from robox.views.robox import upload_files
+from robox.utils import upload_files, validate_barcode
 
 
 def get_by_barcode(request, barcode):

@@ -1,11 +1,11 @@
-{% extends 'robox/robox/../base_generic.html' %}
+{% extends 'robox/base_generic.html' %}
 
 {% block title %}Upload{% endblock %}
 {% block heading %}Upload:{% endblock %}
 {% block links %}
     {% load staticfiles %}
-    <link rel="stylesheet" type="text/css" href="{% static "robox/robox/css/upload.css" %}"/>
-    <script src="{% static "robox/robox/js/upload.js" %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static "robox/web/css/upload.css" %}"/>
+    <script src="{% static "robox/web/js/upload.js" %}"></script>
 {% endblock %}
 {% block content %}
     <form action="{% url "upload" %}" method="post" enctype="multipart/form-data">
