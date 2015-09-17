@@ -1,16 +1,17 @@
+from io import BytesIO
+from plistlib import InvalidFileException
 from zipfile import BadZipFile
 
 import openpyxl
-from openpyxl.utils.exceptions import InvalidFileException
 
 from robox.parsing import make_and_add_parser
 
 desc = "xTen"
 
 
-def accept(file_path):
+def accept(binary_file):
     try:
-        file = openpyxl.load_workbook(file_path)
+        file = openpyxl.load_workbook(BytesIO(binary_file))
         ws = file[file.get_sheet_names()[1]]
 
         for row in ws.rows:
@@ -20,11 +21,11 @@ def accept(file_path):
     except (InvalidFileException, BadZipFile):
         return False
 
-    return True
+    return False
 
 
-def parse(file_path):
-    file = openpyxl.load_workbook(file_path)
+def parse(binary_file):
+    file = openpyxl.load_workbook(BytesIO(binary_file))
 
     ws = file[file.get_sheet_names()[1]]
 

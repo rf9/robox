@@ -12,8 +12,9 @@ A parser file should looks something like this:
 	def parse(f):
 		# Yield a dictionary corresponding to each entry in the file.
 		# e.g:
-		for line in f:
-			cells = line.decode('ascii').replace("\n", "").split(",")
+		file = f.decode('ascii').split('\n')
+		for line in file:
+			cells = line.split(",")
 			# ...
 			yield {"name": name, "address": slot, "value": concentration, "units": units}
 

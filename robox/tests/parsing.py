@@ -3,7 +3,6 @@ import os
 from django.test import TestCase
 
 from mainsite import settings
-
 from robox.parsing import _PARSERS
 
 __author__ = 'rf9'
@@ -17,12 +16,12 @@ class ParserTest(TestCase):
 class AbstractClasses:
     class ParserTestMixin(TestCase):
         def setUp(self):
-            try:
-                self.accepts = self.parser.accept(self.accepted_file)
-                self.parsed_data = list(self.parser.parse(self.accepted_file))
-                self.exception = None
-            except Exception as err:
-                self.exception = err
+            # try:
+            self.accepts = self.parser.accept(self.accepted_file)
+            self.parsed_data = list(self.parser.parse(self.accepted_file))
+            self.exception = None
+            # except Exception as err:
+            #     self.exception = err
 
         def test_accepts_file(self):
             self.assertTrue(self.accepts)
@@ -45,8 +44,8 @@ class IscParserTest(AbstractClasses.ParserTestMixin):
         self.parser = _PARSERS['isc']
         file_path = os.path.join(settings.BASE_DIR,
                                  "robox/tests/testFiles/Caliper2_402755_ISC_1_5_2015-06-30_07-44-47_WellTable.csv")
-        with open(file_path, 'r') as fin:
-            self.accepted_file = [bytes(line, encoding='ascii') for line in fin]
+        with open(file_path, 'rb') as fin:
+            self.accepted_file = fin.read()
         self.expected_headings = ['address', 'name', 'units', 'value']
         self.expected_data = [{'address': 'A1', 'units': 'nM', 'name': 'concentration', 'value': '5.25554636996337'},
                               {'address': 'A1', 'name': 'dilution', 'units': '%', 'value': 20.0},
@@ -64,9 +63,9 @@ class WgsParserTest(AbstractClasses.ParserTestMixin):
     def setUp(self):
         self.parser = _PARSERS['wgs']
         file_path = os.path.join(settings.BASE_DIR,
-                                 "robox/tests/testfiles/Caliper1_411359_PATH_1_3_2015-08-18_01-24-42_WellTable.csv")
-        with open(file_path, 'r') as fin:
-            self.accepted_file = [bytes(line, encoding='ascii') for line in fin]
+                                 "robox/tests/testFiles/Caliper1_411359_PATH_1_3_2015-08-18_01-24-42_WellTable.csv")
+        with open(file_path, 'rb') as fin:
+            self.accepted_file = fin.read()
         self.expected_headings = ['address', 'name', 'units', 'value']
         self.expected_data = [{'address': 'A1', 'units': 'nM', 'name': 'concentration', 'value': '0.798277646077084'},
                               {'address': 'A1', 'name': 'dilution', 'units': '%', 'value': 33.33333333333333},
@@ -83,8 +82,10 @@ class WgsParserTest(AbstractClasses.ParserTestMixin):
 class XTenParserTest(AbstractClasses.ParserTestMixin):
     def setUp(self):
         self.parser = _PARSERS['xTen']
-        self.accepted_file = os.path.join(settings.BASE_DIR,
-                                          "robox/tests/testfiles/DN_DSS1_BR_PCRXP_Assay.xlsx")
+        file_path = os.path.join(settings.BASE_DIR,
+                                 "robox/tests/testFiles/DN_DSS1_BR_PCRXP_Assay.xlsx")
+        with open(file_path, 'rb') as fin:
+            self.accepted_file = fin.read()
         self.expected_headings = ['address', 'name', 'units', 'value']
         self.expected_data = [{'address': 'A1', 'name': 'concentration', 'units': 'ng/ul', 'value': 20.393},
                               {'address': 'B1', 'name': 'concentration', 'units': 'ng/ul', 'value': 26.737},

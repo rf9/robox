@@ -19,7 +19,7 @@
 >>>				{
 >>>					"upload_time": "datetime",
 >>>					"file_type": "string",
->>>					"file": "urlpath",
+>>>					"file": "filename",
 >>>					"data": [
 >>>	             		{
 >>>							"key": "value",
@@ -38,7 +38,7 @@
 >>>				{
 >>>					"upload_time": "2015-09-11T13:55:28.475Z",
 >>>					"file_type": "isc",
->>>					"file": "http://127.0.0.1:8000/media/raw_files/2000001992852/Caliper3_410370_ISC_1_5_2015-07-31_09-35-37_WellTable.csv"
+>>>					"file": "Caliper3_410370_ISC_1_5_2015-07-31_09-35-37_WellTable.csv"
 >>>					"data": [
 >>>	             		{
 >>>							"value": "48.8164672349381",
@@ -138,7 +138,7 @@
 >>>			"files": [
 >>>				{
 >>>					"file_type": "string",
->>>					"file": "urlpath",
+>>>					"file": "filename",
 >>>					"upload_time": "datetime",
 >>>					"data": [
 >>>						{
@@ -157,7 +157,7 @@
 >>>				{
 >>>					"upload_time": "2015-09-09T12:14:05.350Z",
 >>>					"file_type": "wgs",
->>>					"file": "http://127.0.0.1:8000/media/raw_files/2000001992852/Caliper3_410370_ISC_1_5_2015-07-31_09-35-37_WellTable.csv",
+>>>					"file": "Caliper3_410370_ISC_1_5_2015-07-31_09-35-37_WellTable.csv",
 >>>					"data": [
 >>>						{
 >>>							"value": "48.8164672349381",

@@ -4,6 +4,7 @@ from django.views.generic import RedirectView
 from robox.views import web, api, docs
 
 urlpatterns = [
+    # URLs for the webapp.
     url(r'^upload/$', web.UploadView.as_view(), name="upload"),
     url(r'^view/(?P<barcode>\S+)/$', web.view_by_barcode, name="view"),
     url(r'^upload/(?P<barcode>\S+)/$', web.upload_by_barcode, name="upload_barcode"),
@@ -12,9 +13,11 @@ urlpatterns = [
     url(r'^search/$', web.search, name="search"),
     url(r'^$', RedirectView.as_view(url='/view/', permanent=True)),
 
+    # URLs for the api
     url(r'^api/barcode/(?P<barcode>\S+)/$', api.get_by_barcode, name="api_barcode"),
     url(r'^api/upload/$', api.upload, name='api_upload'),
 
+    # URLS for the documentation
     url(r'^docs/$', docs.index, name="docs_index"),
     url(r'^docs/api/$', docs.api, name="docs_api"),
     url(r'^docs/parsers/$', docs.parsers, name="docs_parsers"),

@@ -19,7 +19,7 @@
         {% for file in files|dictsortreversed:"upload_time" %}
             <tr>
                 <td>{{ file.barcode }}</td>
-                <td>{{ file.file }}</td>
+                <td>{{ file.file.name }}</td>
                 <td>{{ file.upload_time }}</td>
                 <td><input type="button" onclick="location.href='{% url "view" file.barcode %}'" value="Show"/></td>
                 <td>

@@ -7,7 +7,7 @@ from django.db.transaction import atomic
 import pika
 from pika.exceptions import ConnectionClosed
 
-from robox.models import File
+from robox.models import File, BinaryFile
 
 __author__ = 'rf9'
 
@@ -43,7 +43,7 @@ def upload_files(barcode, files):
     for file in files:
         try:
             database_file = File.objects.create(
-                file=file,
+                file=BinaryFile.objects.create(data=file.read(), name=str(file)),
                 barcode=barcode,
             )
             database_file.parse()

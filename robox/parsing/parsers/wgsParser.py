@@ -5,8 +5,8 @@ desc = "wgs"
 
 def accept(file):
     try:
-        for line in file:
-            cells = line.decode('ascii').rstrip('\n').split(",")
+        for line in file.decode('ascii').split('\n'):
+            cells = line.split(",")
             return [x for x in filter(bool, cells)] == ['Plate Name', 'Well Label', 'Sample Name', 'Peak Count',
                                                         'Total Conc. (ng/ul)', 'EP138 Molarity (nmol/l)',
                                                         'Region[200-1400] Size at Maximum [BP]',
@@ -18,12 +18,13 @@ def accept(file):
 
 def parse(file):
     first = True
-    for line in file:
+    for line in file.decode('ascii').split('\n'):
         if first:
             first = False
             continue
-
-        cells = line.decode('ascii').rstrip('\n').split(",")
+        if not line:
+            continue
+        cells = line.split(",")
 
         slot = cells[2].split("_")[0]
         concentration = cells[8]

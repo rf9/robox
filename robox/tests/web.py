@@ -1,6 +1,5 @@
 import os
 
-from django.core.files.uploadedfile import UploadedFile
 from django.core.urlresolvers import reverse
 from django.db import IntegrityError, DatabaseError
 from django.test import TransactionTestCase, LiveServerTestCase
@@ -8,7 +7,7 @@ import mock
 from selenium import webdriver
 
 from mainsite import settings, environment
-from robox.models import File, Entry, MetaData
+from robox.models import File, Entry, MetaData, BinaryFile
 
 
 class FileParseTestFail(TransactionTestCase):
@@ -21,7 +20,8 @@ class FileParseTestFail(TransactionTestCase):
             with open(os.path.join(settings.BASE_DIR,
                                    "robox/tests/testfiles/Caliper1_411359_PATH_1_3_2015-08-18_01-24-42_WellTable.csv"),
                       'rb') as f:
-                self.file = File.objects.create(barcode="fake_barcode", file=UploadedFile(file=f))
+                self.file = File.objects.create(barcode="fake_barcode",
+                                                file=BinaryFile.objects.create(data=f.read(), name=str(f)))
             self.file.parse()
             self.exception = None
         except DatabaseError as err:
@@ -54,7 +54,8 @@ class FileParseTestSuccess(TransactionTestCase):
             with open(os.path.join(settings.BASE_DIR,
                                    "robox/tests/testFiles/Caliper1_411359_PATH_1_3_2015-08-18_01-24-42_WellTable.csv"),
                       'rb') as f:
-                self.file = File.objects.create(barcode="fake_barcode", file=UploadedFile(file=f))
+                self.file = File.objects.create(barcode="fake_barcode",
+                                                file=BinaryFile.objects.create(data=f.read(), name=str(f)))
             self.file.parse()
             self.exception = None
         except Exception as err:
@@ -110,7 +111,7 @@ class UploadTestSuccess(LiveServerTestCase):
 
         headers = self.driver.find_elements_by_class_name("file-header")
         self.assertEqual(
-            "File: raw_files/0000000000000/Caliper1_411359_PATH_1_3_2015-08-18_01-24-42_WellTable.csv",
+            "File: Caliper1_411359_PATH_1_3_2015-08-18_01-24-42_WellTable.csv",
             headers[0].find_element_by_tag_name('h3').text)
 
         contents = self.driver.find_element_by_class_name("file-content")

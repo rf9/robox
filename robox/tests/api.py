@@ -2,14 +2,13 @@ from ast import literal_eval
 import json
 import os
 
-from django.core.files.uploadedfile import UploadedFile
 from django.test import TestCase
 
 from mock import MagicMock
 import mock
 
 from mainsite import settings
-from robox.models import File
+from robox.models import File, BinaryFile
 from robox.views.api import get_by_barcode, upload
 
 
@@ -20,7 +19,8 @@ class APIGetTests(TestCase):
         with open(os.path.join(settings.BASE_DIR,
                                "robox/tests/testfiles/Caliper1_411359_PATH_1_3_2015-08-18_01-24-42_WellTable.csv"),
                   'rb') as f:
-            self.file = File.objects.create(barcode=self.barcode, file=UploadedFile(file=f))
+            self.file = File.objects.create(barcode=self.barcode,
+                                            file=BinaryFile.objects.create(data=f.read(), name=str(f)))
         self.file.parse()
         self.file.refresh_from_db()
 
@@ -68,10 +68,10 @@ class APIPostTestsValidBarcode(TestCase):
         with open(os.path.join(settings.BASE_DIR,
                                "robox/tests/testfiles/Caliper1_411359_PATH_1_3_2015-08-18_01-24-42_WellTable.csv"),
                   'rb') as f:
-            self.api_results = upload(MagicMock(FILES={"any": UploadedFile(file=f)}, REQUEST={"barcode": self.barcode}))
+            self.api_results = upload(MagicMock(FILES={str(f): f}, REQUEST={"barcode": self.barcode}))
 
     def test_correct_response_data(self):
-        self.assertEqual(200, self.api_results.status_code)
+        self.assertEqual(201, self.api_results.status_code)
         content = literal_eval(self.api_results.content.decode("ascii"))
 
         self.assertEqual(self.barcode, content["barcode"])

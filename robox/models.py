@@ -15,7 +15,7 @@ _logger = logging.getLogger(__name__)
 class File(models.Model):
     upload_time = models.DateTimeField(auto_now_add=True)
     barcode = models.CharField(max_length=50)
-    file = models.FileField(upload_to=lambda instance, filename: 'raw_files/%s/%s' % (instance.barcode, filename))
+    file = models.ForeignKey('BinaryFile')
     format = models.CharField(max_length=20, default="None")
 
     @cached_property
@@ -42,25 +42,28 @@ class File(models.Model):
         Entry.objects.filter(file=self).delete()
 
         try:
-            parsed_file = parsing.parse(self.file)
-        except parsing.RoboxParsingError:
-            _logger.info("File unparsed: %s" % self.file.path)
+            _logger.debug(self.file.data)
+            parsed_file = parsing.parse(self.file.data)
+        except parsing.RoboxParsingError as err:
+            _logger.info("Unparsed file %s" % self.file.name)
         else:
             self.format = parsed_file['parser']
             self.save()
 
-            _logger.debug("File parsed: %s as %s" % (self.file.path, self.format))
+            _logger.debug("File parsed: %s as %s" % (self.file.name, self.format))
 
             for data in parsed_file['data']:
                 entry = Entry.objects.create(file=self)
                 for key, value in data.items():
                     MetaData.objects.create(entry=entry, key=key, value=value)
 
-    @atomic
-    def delete(self, using=None):
-        self.file.delete()
 
-        super(File, self).delete(using)
+class BinaryFile(models.Model):
+    name = models.CharField(max_length=64)
+    data = models.BinaryField()
+
+    def __str__(self):
+        return self.name
 
 
 class Entry(models.Model):
