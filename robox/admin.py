@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from robox.models import File, BinaryFile
+from robox.models import DataFile, BinaryFile
 
 
 # noinspection PyUnusedLocal
@@ -9,10 +9,10 @@ def reparse_file(modeladmin, request, queryset):
         file.parse()
 
 
-@admin.register(File)
+@admin.register(DataFile)
 class FileAdmin(admin.ModelAdmin):
-    list_display = (File, 'file', 'format', 'barcode', 'upload_time')
-    fields = ('barcode', 'file')
+    list_display = (DataFile, 'binary_file', 'format', 'barcode', 'upload_time')
+    fields = ('barcode', 'binary_file')
     list_filter = ('format', 'upload_time')
     search_fields = ['barcode']
     actions = [reparse_file]

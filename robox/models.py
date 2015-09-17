@@ -12,10 +12,10 @@ from robox import parsing
 _logger = logging.getLogger(__name__)
 
 
-class File(models.Model):
+class DataFile(models.Model):
     upload_time = models.DateTimeField(auto_now_add=True)
     barcode = models.CharField(max_length=50)
-    file = models.ForeignKey('BinaryFile')
+    binary_file = models.ForeignKey('BinaryFile')
     format = models.CharField(max_length=20, default="None")
 
     @cached_property
@@ -39,21 +39,21 @@ class File(models.Model):
     @atomic
     def parse(self):
         # Delete any old entries (in case it is a reparse.
-        Entry.objects.filter(file=self).delete()
+        Entry.objects.filter(data_file=self).delete()
 
         try:
-            _logger.debug(self.file.data)
-            parsed_file = parsing.parse(self.file.data)
+            _logger.debug(self.binary_file.data)
+            parsed_file = parsing.parse(self.binary_file.data)
         except parsing.RoboxParsingError as err:
-            _logger.info("Unparsed file %s" % self.file.name)
+            _logger.info("Unparsed file %s" % self.binary_file.name)
         else:
             self.format = parsed_file['parser']
             self.save()
 
-            _logger.debug("File parsed: %s as %s" % (self.file.name, self.format))
+            _logger.debug("File parsed: %s as %s" % (self.binary_file.name, self.format))
 
             for data in parsed_file['data']:
-                entry = Entry.objects.create(file=self)
+                entry = Entry.objects.create(data_file=self)
                 for key, value in data.items():
                     MetaData.objects.create(entry=entry, key=key, value=value)
 
@@ -67,7 +67,7 @@ class BinaryFile(models.Model):
 
 
 class Entry(models.Model):
-    file = models.ForeignKey(File)
+    data_file = models.ForeignKey(DataFile)
 
 
 class MetaData(models.Model):

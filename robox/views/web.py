@@ -7,14 +7,14 @@ from django.shortcuts import render
 from django.views.generic import FormView, DeleteView
 
 from robox.forms import UploadForm
-from robox.models import File
+from robox.models import DataFile
 from robox.utils import upload_files, validate_barcode
 
 _logger = logging.getLogger(__name__)
 
 
 def index(request):
-    files = File.objects.all().order_by('-upload_time')[:20]
+    files = DataFile.objects.all().order_by('-upload_time')[:20]
 
     return render(request, "robox/web/index.html", {"files": files})
 
@@ -44,7 +44,7 @@ def view_by_barcode(request, barcode):
     barcode = barcode
     try:
         validate_barcode(barcode)
-        files = File.objects.filter(barcode=barcode)
+        files = DataFile.objects.filter(barcode=barcode)
 
         return render(request, "robox/web/view.html", {'files': files, 'barcode': barcode})
     except ValidationError:
@@ -60,5 +60,5 @@ def upload_by_barcode(request, barcode):
 
 
 class FileDelete(DeleteView):
-    model = File
+    model = DataFile
     success_url = reverse_lazy('index')

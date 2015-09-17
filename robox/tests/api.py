@@ -8,7 +8,7 @@ from mock import MagicMock
 import mock
 
 from mainsite import settings
-from robox.models import File, BinaryFile
+from robox.models import DataFile, BinaryFile
 from robox.views.api import get_by_barcode, upload
 
 
@@ -19,8 +19,8 @@ class APIGetTests(TestCase):
         with open(os.path.join(settings.BASE_DIR,
                                "robox/tests/testfiles/Caliper1_411359_PATH_1_3_2015-08-18_01-24-42_WellTable.csv"),
                   'rb') as f:
-            self.file = File.objects.create(barcode=self.barcode,
-                                            file=BinaryFile.objects.create(data=f.read(), name=str(f)))
+            self.file = DataFile.objects.create(barcode=self.barcode,
+                                                binary_file=BinaryFile.objects.create(data=f.read(), name=str(f)))
         self.file.parse()
         self.file.refresh_from_db()
 
@@ -63,7 +63,7 @@ class APIPostTestsValidBarcode(TestCase):
 
     @mock.patch('django_extensions.db.fields.json.dumps', side_effect=mock_return)
     def setUp(self, *save_mock):
-        self.file_count = File.objects.filter(barcode=self.barcode).count()
+        self.file_count = DataFile.objects.filter(barcode=self.barcode).count()
 
         with open(os.path.join(settings.BASE_DIR,
                                "robox/tests/testfiles/Caliper1_411359_PATH_1_3_2015-08-18_01-24-42_WellTable.csv"),
@@ -84,7 +84,7 @@ class APIPostTestsValidBarcode(TestCase):
         self.assertTrue('file_type' in file)
 
     def test_file_added_to_database(self):
-        files = File.objects.filter(barcode=self.barcode)
+        files = DataFile.objects.filter(barcode=self.barcode)
         self.assertEqual(self.file_count + 1, files.count())
 
         file = files[self.file_count]
@@ -93,7 +93,7 @@ class APIPostTestsValidBarcode(TestCase):
         self.assertGreater(file.entry_set.count(), 0)
 
     def tearDown(self):
-        files = File.objects.filter(barcode=self.barcode)
+        files = DataFile.objects.filter(barcode=self.barcode)
         for file in files:
             file.delete()
 
@@ -113,4 +113,4 @@ class APIPostTestsInvalidBarcode(TestCase):
         self.assertEqual('Invalid barcode', content['error'])
 
     def test_not_added_to_database(self):
-        self.assertEqual(0, File.objects.filter(barcode=self.barcode).count())
+        self.assertEqual(0, DataFile.objects.filter(barcode=self.barcode).count())

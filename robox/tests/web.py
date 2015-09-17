@@ -7,7 +7,7 @@ import mock
 from selenium import webdriver
 
 from mainsite import settings, environment
-from robox.models import File, Entry, MetaData, BinaryFile
+from robox.models import DataFile, Entry, MetaData, BinaryFile
 
 
 class FileParseTestFail(TransactionTestCase):
@@ -20,14 +20,14 @@ class FileParseTestFail(TransactionTestCase):
             with open(os.path.join(settings.BASE_DIR,
                                    "robox/tests/testfiles/Caliper1_411359_PATH_1_3_2015-08-18_01-24-42_WellTable.csv"),
                       'rb') as f:
-                self.file = File.objects.create(barcode="fake_barcode",
-                                                file=BinaryFile.objects.create(data=f.read(), name=str(f)))
+                self.file = DataFile.objects.create(barcode="fake_barcode",
+                                                    binary_file=BinaryFile.objects.create(data=f.read(), name=str(f)))
             self.file.parse()
             self.exception = None
         except DatabaseError as err:
             self.exception = err
 
-        self.file = File.objects.get(pk=self.file.pk)
+        self.file = DataFile.objects.get(pk=self.file.pk)
 
     def test_that_file_was_created(self):
         self.assertIsNotNone(self.file)
@@ -54,14 +54,14 @@ class FileParseTestSuccess(TransactionTestCase):
             with open(os.path.join(settings.BASE_DIR,
                                    "robox/tests/testFiles/Caliper1_411359_PATH_1_3_2015-08-18_01-24-42_WellTable.csv"),
                       'rb') as f:
-                self.file = File.objects.create(barcode="fake_barcode",
-                                                file=BinaryFile.objects.create(data=f.read(), name=str(f)))
+                self.file = DataFile.objects.create(barcode="fake_barcode",
+                                                    binary_file=BinaryFile.objects.create(data=f.read(), name=str(f)))
             self.file.parse()
             self.exception = None
         except Exception as err:
             self.exception = err
 
-        self.file = File.objects.get(pk=self.file.pk)
+        self.file = DataFile.objects.get(pk=self.file.pk)
 
     def test_that_file_was_created(self):
         self.assertIsNotNone(self.file)
@@ -121,7 +121,7 @@ class UploadTestSuccess(LiveServerTestCase):
     def tearDown(self):
         self.driver.quit()
 
-        files = File.objects.filter(barcode=self.barcode)
+        files = DataFile.objects.filter(barcode=self.barcode)
         for file in files:
             file.delete()
 

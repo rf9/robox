@@ -7,7 +7,7 @@ from django.db.transaction import atomic
 import pika
 from pika.exceptions import ConnectionClosed
 
-from robox.models import File, BinaryFile
+from robox.models import DataFile, BinaryFile
 
 __author__ = 'rf9'
 
@@ -37,13 +37,12 @@ def upload_files(barcode, files):
     :param files: The Django files to be uploaded
     :return: The database model of the uploaded file.
     """
-    barcode = barcode
     database_files = []
 
     for file in files:
         try:
-            database_file = File.objects.create(
-                file=BinaryFile.objects.create(data=file.read(), name=str(file)),
+            database_file = DataFile.objects.create(
+                binary_file=BinaryFile.objects.create(data=file.read(), name=str(file)),
                 barcode=barcode,
             )
             database_file.parse()
@@ -51,7 +50,7 @@ def upload_files(barcode, files):
         except DatabaseError as err:
             try:
                 # noinspection PyUnboundLocalVariable
-                database_file.file.delete()
+                database_file.binary_file.delete()
             except NameError:
                 pass
             raise err

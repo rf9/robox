@@ -26,7 +26,7 @@
             {% for file in files|dictsortreversed:"upload_time" %}
                 <div class="file {% if file.recent %}recent{% endif %}">
                     <div class="file-header ">
-                        <h3>File: {{ file.file.name }}</h3>
+                        <h3>File: {{ file.binary_file.name }}</h3>
                         <h4>Format: {% if file.format %}{{ file.format }}{% else %}Unknown{% endif %}</h4>
                         <h4>Uploaded at: {{ file.upload_time }}</h4>
                     </div>
