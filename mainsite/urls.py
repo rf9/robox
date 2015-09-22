@@ -14,7 +14,6 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
 from django.conf.urls import include, url, patterns
-from django.conf.urls.static import static
 from django.contrib import admin
 
 from mainsite import settings
@@ -22,4 +21,4 @@ from mainsite import settings
 urlpatterns = patterns("",
                        url(r'^admin/', include(admin.site.urls)),
                        url(r'^', include('robox.urls')),
-                       ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+                       )
