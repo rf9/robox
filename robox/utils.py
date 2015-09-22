@@ -16,7 +16,7 @@ _logger = logging.getLogger(__name__)
 
 def validate_barcode(barcode):
     """
-    Validate the barcode against EAN13 format.
+    Validate the barcode against EAN13 format if it is 13 digits long, will just accept anything else.
     :raises ValidationError: if barcode is not valid.
     :param barcode: The barcode to be validated
     """
@@ -24,9 +24,8 @@ def validate_barcode(barcode):
         # EAN13
         total = sum(int(ch) * (1 + 2 * (i & 1)) for i, ch in enumerate(barcode[:-1]))
         checksum = (10 - total) % 10
-        if str(checksum) == barcode[-1]:
-            return
-    raise ValidationError("Invalid barcode")
+        if str(checksum) != barcode[-1]:
+            raise ValidationError("Invalid barcode")
 
 
 @atomic

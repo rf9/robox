@@ -36,3 +36,7 @@ h3, h4 {
 .upload h3 {
     font-family: sans-serif;
 }
+
+.warning {
+    color: red;
+}
