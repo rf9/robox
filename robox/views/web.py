@@ -44,7 +44,7 @@ def view_by_barcode(request, barcode):
     barcode = barcode
     try:
         validate_barcode(barcode)
-        files = DataFile.objects.filter(barcode=barcode)
+        files = DataFile.objects.filter(barcode__iexact=barcode)
 
         return render(request, "robox/web/view.html", {'files': files, 'barcode': barcode})
     except ValidationError:

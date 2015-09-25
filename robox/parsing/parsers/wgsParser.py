@@ -1,3 +1,5 @@
+from collections import OrderedDict
+
 from robox.parsing import make_and_add_parser
 
 desc = "wgs"
@@ -31,23 +33,25 @@ def parse(file):
         dilution_parts = cells[2].split("_")[-2:]
 
         if concentration:
-            yield {"name": "concentration",
-                   "address": slot,
-                   "value": concentration,
-                   "units": "nM"
-                   }
+            yield OrderedDict((
+                ('address', slot),
+                ('name', 'concentration'),
+                ('value', concentration),
+                ('units', 'nM')
+            ))
 
         try:
             dilution = int(dilution_parts[0]) / int(dilution_parts[1]) * 100
         except ValueError:
             dilution = None
 
-        if dilution is not None:
-            yield {"name": "dilution",
-                   "address": slot,
-                   "value": dilution,
-                   "units": "%"
-                   }
+        if dilution:
+            yield OrderedDict((
+                ('address', slot),
+                ('name', "dilution"),
+                ('value', dilution),
+                ('units', "%")
+            ))
 
 
 make_and_add_parser("wgs", parse, accept)

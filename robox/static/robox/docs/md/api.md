@@ -1,4 +1,4 @@
-### api/barcode/{barcode}/
+### api/files/?barcode={barcode}
 
 >Gets all files and their parsed data with the given barcode.
 >
@@ -13,90 +13,59 @@
 >>>Format:
 >>>	 
 >>>	    
->>>		{
->>>			"barcode": "barcode",
->>>			"files": [
->>>				{
->>>					"upload_time": "datetime",
->>>					"file_type": "string",
->>>					"file": "filename",
->>>					"data": [
->>>	             		{
->>>							"key": "value",
->>>						},
->>>					],
->>>				},
->>>	   		],
->>>		}
+	{
+		"count": #
+		"next": url,
+		"previous": url,
+		"results": [
+			{
+				"barcode": string,
+				"format": strign,
+				"upload_time": datetime,
+				"data": [
+					{
+						"key": string,
+					}
+				]
+			}
+		]
+	}
+		
 >>>
 >>>Examples:
 >>>
->>>		
->>>		{
->>>			"barcode": "2000001992852",
->>>	   		"files": [
->>>				{
->>>					"upload_time": "2015-09-11T13:55:28.475Z",
->>>					"file_type": "isc",
->>>					"file": "Caliper3_410370_ISC_1_5_2015-07-31_09-35-37_WellTable.csv"
->>>					"data": [
->>>	             		{
->>>							"value": "48.8164672349381",
->>>							"address": "A1",
->>>							"units": "nM",
->>>							"name": "concentration"
->>>						},
->>>						{
->>>							"value": "33.33333333333333",
->>>							"address": "A1",
->>>							"units": "%",
->>>							"name": "dilution"
->>>						},
->>>						{
->>>							"value": "54.134358195761",
->>>							"address": "B1",
->>>							"units": "nM",
->>>							"name": "concentration"
->>>						},
->>>						{
->>>							"value": "33.33333333333333",
->>>							"address": "B1",
->>>							"units": "%",
->>>							"name": "dilution"
->>>						}
->>>					],
->>>				}
->>>	    	],
->>>		}
->>>>
->>>
->>>		{
->>>			"barcode": "2000001992852",
->>>	    	"files": [],	    
->>>		}
->>
->>Error:
->>
->>>Status code: 422
->>>
->>>Media type: application/json
->>>
->>>Format:
->>>
->>>		{
->>>	    	"error": "message",
->>>	    	"barcode": "barcode",
->>>		}
->>>	
->>>Example:
->>>
->>>		{
->>>	    	"error": "Invalid barcode",
->>>	    	"barcode": "123456789",
->>>		}
->>>	 
+	{
+		{
+			"count": 23,
+			"next": null,
+			"previous": "http://127.0.0.1:8000/api/files/?limit=10&offset=5",
+			"results": [
+				{
+					"barcode": "cgap123",
+					"format": "xTen",
+					"upload_time": "2015-09-25T11:55:31.595789Z",
+					"data": [
+						{
+							"units": "ng/ul",
+							"value": "12.317",
+							"address": "A1",
+							"name": "concentration"
+						},
+						{
+							"units": "ng/ul",
+							"value": "8.49",
+							"address": "B1",
+							"name": "concentration"
+						},
+						...
+					]
+				},
+				...
+			]
+		}
+	}
        
-### api/upload/
+### api/files/
 >Upload a set of files to a particular barcode and return their parsed data.
 >
 >Type: post
@@ -133,60 +102,54 @@
 >>>
 >>>Format:
 >>>
->>>		{
->>>			"barcode": "barcode",
->>>			"files": [
->>>				{
->>>					"file_type": "string",
->>>					"file": "filename",
->>>					"upload_time": "datetime",
->>>					"data": [
->>>						{
->>>							"key": "value"
->>>						},
->>>					],
->>>				},
->>>			],
->>>		}
+	{
+		"results": [
+			{
+				"barcode": string,
+				"format": string,
+				"upload_time": datetime,
+				"data": [
+					{
+						"key": string,
+					}
+				]
+			}
+		]
+	}
+		
 >>>	
 >>>Example:
 >>>
->>>		{
->>>			"barcode": "2000001992852",
->>>			"files": [
->>>				{
->>>					"upload_time": "2015-09-09T12:14:05.350Z",
->>>					"file_type": "wgs",
->>>					"file": "Caliper3_410370_ISC_1_5_2015-07-31_09-35-37_WellTable.csv",
->>>					"data": [
->>>						{
->>>							"value": "48.8164672349381",
->>>							"address": "A1",
->>>							"units": "nM",
->>>							"name": "concentration"
->>>						},
->>>						{
->>>							"value": "33.33333333333333",
->>>							"address": "A1",
->>>							"units": "%",
->>>							"name": "dilution"
->>>						},
->>>						{
->>>							"value": "54.134358195761",
->>>							"address": "B1",
->>>							"units": "nM",
->>>							"name": "concentration"
->>>						},
->>>						{
->>>							"value": "33.33333333333333",
->>>							"address": "B1",
->>>							"units": "%",
->>>							"name": "dilution"
->>>						},
->>>					],
->>>				},
->>>			],
->>>		}
+	{
+		{
+			"count": 23,
+			"next": null,
+			"previous": "http://127.0.0.1:8000/api/files/?limit=10&offset=5",
+			"results": [
+				{
+					"barcode": "cgap123",
+					"format": "xTen",
+					"upload_time": "2015-09-25T11:55:31.595789Z",
+					"data": [
+						{
+							"units": "ng/ul",
+							"value": "12.317",
+							"address": "A1",
+							"name": "concentration"
+						},
+						{
+							"units": "ng/ul",
+							"value": "8.49",
+							"address": "B1",
+							"name": "concentration"
+						},
+						...
+					]
+				},
+				...
+			]
+		}
+	}
 >>
 >>Error:
 >>
@@ -196,15 +159,15 @@
 >>>
 >>>Format:
 >>>
->>>		{
->>>	   		"error": "message",
->>>	   		"barcode": "barcode",
->>>		}
+	{
+		"error": "message",
+		"barcode": "barcode",
+	}
 >>>	
 >>>Example:
 >>>
->>>		{
->>>	    	"error": "Invalid barcode",
->>>	    	"barcode": "123456789",
->>>		}
+	{
+		"error": "Invalid barcode",
+		"barcode": "123456789",
+	}
                     

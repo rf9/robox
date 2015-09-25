@@ -2,14 +2,13 @@ from ast import literal_eval
 import json
 import os
 
-from django.test import TestCase
+from django.core.urlresolvers import reverse
 
-from mock import MagicMock
+from django.test import TestCase
 import mock
 
 from mainsite import settings
 from robox.models import DataFile, BinaryFile
-from robox.views.api import get_by_barcode, upload
 
 
 class APIGetTests(TestCase):
@@ -25,26 +24,29 @@ class APIGetTests(TestCase):
         self.file.refresh_from_db()
 
     def test_with_valid_barcode(self):
-        api_results = get_by_barcode(None, self.barcode)
+        url = reverse('file-list') + "?barcode=" + self.barcode
+        api_results = self.client.get(url)
+
         self.assertEqual(200, api_results.status_code)
-        content = json.loads(api_results.content.decode("ascii"))
+        results = json.loads(api_results.content.decode("ascii"))['results']
+
+        self.assertEqual(1, len(results))
+        content = results[0]
 
         self.assertEqual(self.barcode, content["barcode"])
-        self.assertEqual(list, type(content['files']))
-        self.assertEqual(1, len(content['files']))
-        file = content['files'][0]
-        self.assertTrue('data' in file)
-        self.assertTrue('upload_time' in file)
-        self.assertTrue('file' in file)
-        self.assertTrue('file_type' in file)
+        self.assertTrue('data' in content)
+        self.assertEqual(375, len(content['data']))
+        self.assertTrue('upload_time' in content)
+        self.assertTrue('format' in content)
 
     def test_with_invalid_barcode(self):
-        api_results = get_by_barcode(None, "fake_barcode")
-        self.assertEqual(422, api_results.status_code)
-        content = json.loads(api_results.content.decode("ascii"))
+        url = reverse('file-list') + "?barcode=fakebarcode"
+        api_results = self.client.get(url)
 
-        self.assertEqual("fake_barcode", content['barcode'])
-        self.assertEqual('Invalid barcode', content['error'])
+        self.assertEqual(200, api_results.status_code)
+        results = json.loads(api_results.content.decode("ascii"))['results']
+
+        self.assertEqual(0, len(results))
 
     def tearDown(self):
         self.file.delete()
@@ -68,20 +70,24 @@ class APIPostTestsValidBarcode(TestCase):
         with open(os.path.join(settings.BASE_DIR,
                                "robox/tests/testfiles/Caliper1_411359_PATH_1_3_2015-08-18_01-24-42_WellTable.csv"),
                   'rb') as f:
-            self.api_results = upload(MagicMock(FILES={str(f): f}, REQUEST={"barcode": self.barcode}))
+            url = reverse('file-list')
+            data = {"barcode": self.barcode, "uploaded_file": f}
+            self.api_results = self.client.post(url, data=data)
 
     def test_correct_response_data(self):
         self.assertEqual(201, self.api_results.status_code)
-        content = literal_eval(self.api_results.content.decode("ascii"))
+        response = literal_eval(self.api_results.content.decode("ascii"))
+
+        self.assertIn('results', response)
+        self.assertEqual(1, len(response['results']))
+        content = response['results'][0]
 
         self.assertEqual(self.barcode, content["barcode"])
-        self.assertEqual(list, type(content['files']))
-        self.assertEqual(1, len(content['files']))
-        file = content['files'][0]
-        self.assertTrue('data' in file)
-        self.assertTrue('upload_time' in file)
-        self.assertTrue('file' in file)
-        self.assertTrue('file_type' in file)
+        self.assertTrue('data' in content)
+        self.assertEqual(375, len(content['data']))
+        self.assertTrue('upload_time' in content)
+        self.assertTrue('format' in content)
+        self.assertEqual("wgs", content['format'])
 
     def test_file_added_to_database(self):
         files = DataFile.objects.filter(barcode=self.barcode)
@@ -99,10 +105,12 @@ class APIPostTestsValidBarcode(TestCase):
 
 
 class APIPostTestsInvalidBarcode(TestCase):
-    barcode = 'fake_barcode'
+    barcode = '0000000000001'
 
     def setUp(self):
-        self.api_results = upload(MagicMock(FILES=None, REQUEST={"barcode": self.barcode}))
+        url = reverse('file-list')
+        data = {"barcode": self.barcode}
+        self.api_results = self.client.post(url, data=data)
 
     def test_correct_response_data(self):
         self.assertEqual(422, self.api_results.status_code)

@@ -1,3 +1,4 @@
+from collections import OrderedDict
 from io import BytesIO
 from plistlib import InvalidFileException
 from zipfile import BadZipFile
@@ -38,11 +39,12 @@ def parse(binary_file):
         slot = str(row[0].value) + str(row[1].value)
         concentration = row[4].value
 
-        yield {"name": "concentration",
-               "address": slot,
-               "value": concentration,
-               "units": "ng/ul"
-               }
+        yield OrderedDict((
+            ('address', slot),
+            ('name', "concentration"),
+            ('value', concentration),
+            ('units', "ng/ul"),
+        ))
 
 
 make_and_add_parser("xTen", parse, accept)

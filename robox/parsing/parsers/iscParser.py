@@ -1,3 +1,5 @@
+from collections import OrderedDict
+
 from robox.parsing import make_and_add_parser
 
 
@@ -5,7 +7,7 @@ def accept(file):
     try:
         for line in file.decode('ascii').split('\n'):
             cells = line.split(",")
-            return [x for x in filter(None, cells)] == ['Plate Name', 'Well Label', 'Sample Name', 'Peak Count',
+            return [x for x in filter(bool, cells)] == ['Plate Name', 'Well Label', 'Sample Name', 'Peak Count',
                                                         'Total Conc. (ng/ul)', 'Region[200-700] Molarity (nmol/l)']
     except UnicodeDecodeError:
         return False
@@ -31,18 +33,20 @@ def parse(file):
             dilution = None
 
         if concentration:
-            yield {"name": "concentration",
-                   "address": slot,
-                   "value": concentration,
-                   "units": "nM"
-                   }
+            yield OrderedDict((
+                ('address', slot),
+                ('name', 'concentration'),
+                ('value', concentration),
+                ('units', 'nM')
+            ))
 
         if dilution:
-            yield {"name": "dilution",
-                   "address": slot,
-                   "value": dilution,
-                   "units": "%"
-                   }
+            yield OrderedDict((
+                ('address', slot),
+                ('name', "dilution"),
+                ('value', dilution),
+                ('units', "%")
+            ))
 
 
 make_and_add_parser("isc", parse, accept)

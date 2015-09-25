@@ -1,7 +1,11 @@
 from django.conf.urls import url
 from django.views.generic import RedirectView
+from rest_framework import routers
 
 from robox.views import web, api, docs
+
+router = routers.SimpleRouter()
+router.register(r'api/files', api.FileViewSet, base_name='file')
 
 urlpatterns = [
     # URLs for the webapp.
@@ -13,12 +17,8 @@ urlpatterns = [
     url(r'^search/$', web.search, name="search"),
     url(r'^$', RedirectView.as_view(url='/view/', permanent=True)),
 
-    # URLs for the api
-    url(r'^api/barcode/(?P<barcode>\S+)/$', api.get_by_barcode, name="api_barcode"),
-    url(r'^api/upload/$', api.upload, name='api_upload'),
-
     # URLS for the documentation
     url(r'^docs/$', docs.index, name="docs_index"),
     url(r'^docs/api/$', docs.api, name="docs_api"),
     url(r'^docs/parsers/$', docs.parsers, name="docs_parsers"),
-]
+              ] + router.urls

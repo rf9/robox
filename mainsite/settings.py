@@ -26,7 +26,7 @@ DEBUG = environment.DEBUG
 
 SECRET_KEY = environment.SECRET_KEY
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'robox',
 )
 

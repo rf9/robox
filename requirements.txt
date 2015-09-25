@@ -6,3 +6,4 @@ openpyxl
 Django
 django-extensions
 six
+djangorestframework
