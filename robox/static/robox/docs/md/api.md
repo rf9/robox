@@ -74,22 +74,23 @@
 >
 >>Arguments:
 >>
->>>Parameters:
+>>>Body:
 >>>
->>>>barcode: {string}
->>>
->>>File:
+>>>>Media type: application/json
 >>>>
->>>>Media type: multipart/form-data
->>>
->>>>Contents:
+>>>>Format:
 >>>>
->>>>>any_name: 
->>>>>>Media type: application/octet-stream
->>>>>
->>>>>any_name: 
->>>>>>Media type: application/octet-stream
->>>>>
+	{
+		"barcode": string
+	}
+>>>
+>>>Files:
+>>>>any_name: 
+>>>>>Media type: application/octet-stream
+>>>>
+>>>>any_name: 
+>>>>>Media type: application/octet-stream
+>>>>
 >>>>>...
 >
 >Responses

@@ -42,7 +42,6 @@ class DataFile(models.Model):
         Entry.objects.filter(data_file=self).delete()
 
         try:
-            _logger.debug(self.binary_file.data)
             parsed_file = parsing.parse(self.binary_file.data)
         except parsing.RoboxParsingError as err:
             _logger.info("Unparsed file %s" % self.binary_file.name)

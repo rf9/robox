@@ -3,7 +3,6 @@ import json
 import os
 
 from django.core.urlresolvers import reverse
-
 from django.test import TestCase
 import mock
 
@@ -47,9 +46,6 @@ class APIGetTests(TestCase):
         results = json.loads(api_results.content.decode("ascii"))['results']
 
         self.assertEqual(0, len(results))
-
-    def tearDown(self):
-        self.file.delete()
 
 
 def mock_return(value):
@@ -98,10 +94,50 @@ class APIPostTestsValidBarcode(TestCase):
         self.assertEqual("wgs", file.format)
         self.assertGreater(file.entry_set.count(), 0)
 
-    def tearDown(self):
+
+class APIPostTestMultipleFiles(TestCase):
+    barcode = "0000000000000"
+
+    @mock.patch('django_extensions.db.fields.json.dumps', side_effect=mock_return)
+    def setUp(self, *save_mock):
+        self.file_count = DataFile.objects.filter(barcode=self.barcode).count()
+
+        with open(os.path.join(settings.BASE_DIR,
+                               "robox/tests/testfiles/Caliper1_411359_PATH_1_3_2015-08-18_01-24-42_WellTable.csv"),
+                  'rb') as f1:
+            with open(os.path.join(settings.BASE_DIR,
+                                   "robox/tests/testfiles/Caliper2_402755_ISC_1_5_2015-06-30_07-44-47_WellTable.csv"),
+                      'rb') as f2:
+                url = reverse('file-list')
+                data = {"barcode": self.barcode, "uploaded_file1": f1, "uploaded_file2": f2}
+                self.api_results = self.client.post(url, data=data)
+
+    def test_correct_response_data(self):
+        self.assertEqual(201, self.api_results.status_code)
+        response = literal_eval(self.api_results.content.decode("ascii"))
+
+        self.assertIn('results', response)
+        self.assertEqual(2, len(response['results']))
+
+        for content in response['results']:
+            self.assertEqual(self.barcode, content["barcode"])
+            self.assertTrue('data' in content)
+            self.assertTrue('upload_time' in content)
+            self.assertTrue('format' in content)
+
+        entries = [len(content['data']) for content in response['results']]
+        formats = [content['format'] for content in response['results']]
+        self.assertListEqual([375, 384], sorted(entries))
+        self.assertListEqual(['isc', 'wgs'], sorted(formats))
+
+    def test_file_added_to_database(self):
         files = DataFile.objects.filter(barcode=self.barcode)
-        for file in files:
-            file.delete()
+        self.assertEqual(self.file_count + 2, files.count())
+
+        for file in files[self.file_count:self.file_count + 1]:
+            self.assertEqual(self.barcode, file.barcode)
+            self.assertIn(file.format, ['wgs', 'isc'])
+            self.assertGreater(file.entry_set.count(), 300)
 
 
 class APIPostTestsInvalidBarcode(TestCase):
