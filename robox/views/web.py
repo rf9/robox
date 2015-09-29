@@ -14,7 +14,7 @@ _logger = logging.getLogger(__name__)
 
 
 def index(request):
-    files = DataFile.objects.all().order_by('-upload_time')[:20]
+    files = DataFile.objects.all().order_by('-upload_time')[:15]
 
     return render(request, "robox/web/index.html", {"files": files})
 

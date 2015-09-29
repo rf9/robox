@@ -15,7 +15,7 @@ urlpatterns = [
     url(r'^view/$', web.index, name="index"),
     url(r'^delete/(?P<pk>[0-9]+)/$', web.FileDelete.as_view(), name='delete_file'),
     url(r'^search/$', web.search, name="search"),
-    url(r'^$', RedirectView.as_view(url='/view/', permanent=True)),
+                  url(r'^$', RedirectView.as_view(url='/view/', permanent=True), name='root'),
 
     # URLS for the documentation
     url(r'^docs/$', docs.index, name="docs_index"),

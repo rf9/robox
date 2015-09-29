@@ -16,7 +16,7 @@
         <input id='search-box-text-field' type="text" name="barcode" placeholder="Barcode...">
         <button type="submit">Find</button>
     </form>
-    <h1>Robox</h1>
+    <h1><a href="{% url 'root' %}">Robox</a></h1>
     <a href="{% url 'index' %}">Index</a>
     <a href="{% url 'upload' %}">Upload</a>
     <a href="{% url 'docs_index' %}">Documentation</a>
@@ -27,6 +27,9 @@
 <div class="content">
     {% block content %}
     {% endblock %}
+</div>
+<div class="footer">
+    <p>&copy; Sanger Institute 2015</p>
 </div>
 </body>
 </html>
