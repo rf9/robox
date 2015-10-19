@@ -43,7 +43,7 @@ class DataFile(models.Model):
 
         try:
             parsed_file = parsing.parse(self.binary_file.data)
-        except parsing.RoboxParsingError as err:
+        except parsing.RoboxParsingError:
             _logger.info("Unparsed file %s" % self.binary_file.name)
         else:
             self.format = parsed_file['parser']

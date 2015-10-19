@@ -33,10 +33,10 @@ class APIGetTests(TestCase):
         content = results[0]
 
         self.assertEqual(self.barcode, content["barcode"])
-        self.assertTrue('data' in content)
+        self.assertIn('data', content)
         self.assertEqual(375, len(content['data']))
-        self.assertTrue('upload_time' in content)
-        self.assertTrue('format' in content)
+        self.assertIn('upload_time', content)
+        self.assertIn('format', content)
 
     def test_with_invalid_barcode(self):
         url = reverse('file-list') + "?barcode=fakebarcode"
@@ -79,10 +79,10 @@ class APIPostTestsValidBarcode(TestCase):
         content = response['results'][0]
 
         self.assertEqual(self.barcode, content["barcode"])
-        self.assertTrue('data' in content)
+        self.assertIn('data', content)
         self.assertEqual(375, len(content['data']))
-        self.assertTrue('upload_time' in content)
-        self.assertTrue('format' in content)
+        self.assertIn('upload_time', content)
+        self.assertIn('format', content)
         self.assertEqual("wgs", content['format'])
 
     def test_file_added_to_database(self):
@@ -121,9 +121,9 @@ class APIPostTestMultipleFiles(TestCase):
 
         for content in response['results']:
             self.assertEqual(self.barcode, content["barcode"])
-            self.assertTrue('data' in content)
-            self.assertTrue('upload_time' in content)
-            self.assertTrue('format' in content)
+            self.assertIn('data', content)
+            self.assertIn('upload_time', content)
+            self.assertIn('format', content)
 
         entries = [len(content['data']) for content in response['results']]
         formats = [content['format'] for content in response['results']]
