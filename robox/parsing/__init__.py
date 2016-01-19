@@ -80,7 +80,7 @@ class RoboxParsingError(Exception):
 
 def parse(file_to_parse):
     def fail(msg):
-        raise RoboxParsingError("Error parsing file '%s': %s" % (file_to_parse, msg))
+        raise RoboxParsingError("Error parsing file %r: %s" % (file_to_parse, msg))
 
     parsers = get_parsers(file_to_parse)
     if not parsers:
