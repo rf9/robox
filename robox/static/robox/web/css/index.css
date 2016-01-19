@@ -1,7 +1,7 @@
-table td {
-    padding-right: 10px;
+.files .row:nth-child(even) {
+    background: whitesmoke;
 }
-th {
-    text-align: left;
-    font-family: sans-serif;
+
+.files .row {
+    padding: 2px;
 }

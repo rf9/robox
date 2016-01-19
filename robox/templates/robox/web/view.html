@@ -1,58 +1,66 @@
 {% extends 'robox/base_generic.html' %}
 
 {% block title %}Viewing: {{ barcode }}{% endblock %}
-{% block heading %}Viewing: {{ barcode }}{% endblock %}
 {% block links %}
     {% load staticfiles %}
     <link rel="stylesheet" href="{% static "robox/web/css/view.css" %}"/>
     <script src="{% static "robox/web/js/view.js" %}"></script>
 {% endblock %}
 {% block content %}
-    {% if invalid == True %}
-        <h3>Invalid barcode.</h3>
-    {% else %}
-        <div class="upload">
-            <form action="{% url "upload_barcode" barcode %}" method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                <h3>Upload to {{ barcode }}</h3>
-                <label for="id_file">Files:</label>
-                <input id="id_file" name="file" type="file" multiple>
-                <input type="submit" value="submit">
-            </form>
+    <div class="row">
+        <div class="col-sm-8">
+            <h3>Viewing: {{ barcode }}</h3>
         </div>
+        {% if not invalid %}
+            <div class="upload col-sm-4">
+                <form action="{% url "upload_barcode" barcode %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <h4>Upload to: {{ barcode }}</h4>
+                    <label for="id_file">
+                        <span>Files:</span>
+                        <input id="id_file" name="file" type="file" multiple>
+                    </label>
+                    <div>
+                        <input class="btn btn-default btn-xs" type="submit" value="Submit">
+                    </div>
+                </form>
+            </div>
+        {% endif %}
+    </div>
+    {% if invalid %}
+        <h3>Invalid barcode</h3>
+    {% else %}
         {% if files|length_is:'0' %}
             <h3>No files found.</h3>
         {% else %}
             {% for file in files|dictsortreversed:"upload_time" %}
                 <div class="file {% if file.recent %}recent{% endif %}">
                     <div class="file-header ">
-                        <h3>File: <a href="{% url 'download' file.binary_file.pk %}">{{ file.binary_file.name }}</a>
-                        </h3>
-                        <h4>Format: {% if file.format != "None" %}{{ file.format }}{% else %}
-                            <span class="warning">Unrecognised</span>{% endif %}</h4>
-                        <h4>Uploaded at: {{ file.upload_time|date:'Y-m-d H:i:s' }}</h4>
+                        <h4>File: <a href="{% url 'download' file.binary_file.pk %}">{{ file.binary_file.name }}</a>
+                        </h4>
+                        <h5>Format: {% if file.format != "None" %}{{ file.format }}{% else %}
+                            <span class="warning">Unrecognised</span>{% endif %}</h5>
+                        <h5>Uploaded at: {{ file.upload_time|date:'Y-m-d H:i:s' }}</h5>
                     </div>
                     <input class="toggle-content" id="file{{ file.id }}" type="checkbox">
                     <label for="file{{ file.id }}">
                         <span>&#9654; Expand</span>
                         <span>&#9660; Collapse</span>
                     </label>
-                    <div class="file-content">
-                        <table>
+                    <table class="file-content">
+                        <tr>
+                            {% for heading in file.headings %}
+                                <th>{{ heading }}</th>
+                            {% endfor %}
+                        </tr>
+                        {% for data in file.content %}
                             <tr>
-                                {% for heading in file.headings %}
-                                    <th>{{ heading }}</th>
+                                {% for dataum in data %}
+                                    <td>{{ dataum }}</td>
                                 {% endfor %}
                             </tr>
-                            {% for data in file.content %}
-                                <tr>
-                                    {% for dataum in data %}
-                                        <td>{{ dataum }}</td>
-                                    {% endfor %}
-                                </tr>
-                            {% endfor %}
-                        </table>
-                    </div>
+                        {% endfor %}
+                    </table>
                 </div>
             {% endfor %}
         {% endif %}

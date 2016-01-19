@@ -1,28 +1,28 @@
 {% extends 'robox/base_generic.html' %}
 
 {% block title %}Index{% endblock %}
-{% block heading %}Latest {{ files.count }} files:{% endblock %}
 {% block links %}
     {% load staticfiles %}
     <link rel="stylesheet" type="text/css" href="{% static "robox/web/css/index.css" %}"/>
 {% endblock %}
 {% block content %}
-    <table>
-        <tr>
-            <th>Barcode</th>
-            <th>Filename</th>
+    <h3>Latest {{ files.count }} files:</h3>
+    <div class="row container files">
+        <div class="row">
+            <h4 class="col-xs-2">Barcode</h4>
+            <h4 class="col-xs-6">Filename</h4>
             {% load tz %}
             {% get_current_timezone as TIME_ZONE %}
-            <th>Upload time ({{ TIME_ZONE }})</th>
-            <th></th>
-        </tr>
+            <h4 class="col-xs-2">Upload time ({{ TIME_ZONE }})</h4>
+        </div>
         {% for file in files|dictsortreversed:"upload_time" %}
-            <tr>
-                <td>{{ file.barcode }}</td>
-                <td>{{ file.binary_file.name }}</td>
-                <td>{{ file.upload_time|date:'Y-m-d H:i:s' }}</td>
-                <td><input type="button" onclick="location.href='{% url "view" file.barcode %}'" value="Show"/></td>
-            </tr>
+            <div class="row">
+                <div class="col-xs-2">{{ file.barcode }}</div>
+                <div class="col-xs-6">{{ file.binary_file.name }}</div>
+                <div class="col-xs-2">{{ file.upload_time|date:'Y-m-d H:i:s' }}</div>
+                <div class="col-xs-1"><a href="{% url "view" file.barcode %}" class="btn btn-default btn-xs">Show</a>
+                </div>
+            </div>
         {% endfor %}
-    </table>
+    </div>
 {% endblock %}

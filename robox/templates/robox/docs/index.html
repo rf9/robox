@@ -1,12 +1,12 @@
 {% extends 'robox/base_generic.html' %}
 
 {% block title %}Documentation{% endblock %}
-{% block heading %}Documentation:{% endblock %}
 {% block links %}
     {% load staticfiles %}
     <link rel="stylesheet" type="text/css" href="{% static "robox/docs/css/docs_base.css" %}"/>
 {% endblock %}
 {% block content %}
-    <h3><a href={% url 'docs_api' %}>API Docs</a></h3>
-    <h3><a href={% url 'docs_parsers' %}>Parser Docs</a></h3>
+    <h3>Documentation:</h3>
+    <h4><a href={% url 'docs_api' %}>API Docs</a></h4>
+    <h4><a href={% url 'docs_parsers' %}>Parser Docs</a></h4>
 {% endblock %}

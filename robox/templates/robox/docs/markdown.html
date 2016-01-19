@@ -1,7 +1,6 @@
 {% extends 'robox/base_generic.html' %}
 
 {% block title %}{{ title }}{% endblock %}
-{% block heading %}{{ title }}:{% endblock %}
 {% block links %}
     {% load staticfiles %}
     <link rel="stylesheet" type="text/css" href="{% static "robox/docs/css/docs_base.css" %}"/>
@@ -10,6 +9,7 @@
     <script>hljs.initHighlightingOnLoad();</script>
 {% endblock %}
 {% block content %}
+    <h3>{{ title }}:</h3>
     {% load markdown_filter %}
     {{ markdown_content|markdownify|safe }}
 {% endblock %}

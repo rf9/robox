@@ -1,13 +1,12 @@
 {% extends 'robox/base_generic.html' %}
 
 {% block title %}Upload{% endblock %}
-{% block heading %}Upload:{% endblock %}
 {% block links %}
     {% load staticfiles %}
-    <link rel="stylesheet" type="text/css" href="{% static "robox/web/css/upload.css" %}"/>
     <script src="{% static "robox/web/js/upload.js" %}"></script>
 {% endblock %}
 {% block content %}
+    <h3>Upload:</h3>
     <form action="{% url "upload" %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <div>
@@ -16,10 +15,14 @@
         </div>
         <div>
             {{ form.file.errors }}
-            <label for="id_file">Files:</label>
-            <input id="id_file" name="file" type="file" multiple>
+            <label>
+                <span>Files:</span>
+                <input id="id_file" name="file" type="file" multiple>
+            </label>
         </div>
-        <input type="submit" value="submit" />
+        <div>
+            <input type="submit" value="Submit" class="btn btn-default btn-sm"/>
+            <a href="{% url "index" %}" class="btn btn-default btn-sm">back</a>
+        </div>
     </form>
-    <input type="button" onclick="location.href='{% url "index" %}'" value="back"/>
 {% endblock %}

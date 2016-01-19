@@ -4,32 +4,37 @@
     <meta charset="UTF-8">
     <title>Robox - {% block title %}{% endblock %}</title>
 
-    {%  load staticfiles %}
+    {% load staticfiles %}
     <link rel="stylesheet" type="text/css" href="{% static "robox/web/css/base.css" %}"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="{% static "robox/web/js/base.js" %}"></script>
+
+    <link rel="stylesheet" type="text/css" href="{% static "bootstrap/css/bootstrap.min.css" %}"/>
+
     {% block links %}{% endblock %}
 </head>
-<body>
-<div class="nav-bar">
-    <form id="search-box" action="{% url 'search' %}">
-        <input id='search-box-text-field' type="text" name="barcode" placeholder="Barcode...">
-        <button type="submit">Find</button>
+<body class="container">
+<div class="nav-bar row">
+    <div class="col-sm-10">
+        <h1><a href="{% url 'root' %}">Robox</a></h1>
+        <a href="{% url 'index' %}">Index</a>
+        <a href="{% url 'upload' %}">Upload</a>
+        <a href="{% url 'docs_index' %}">Documentation</a>
+    </div>
+    <form class="input-group col-sm-2" id="search-box" action="{% url 'search' %}">
+        <input class="form-control" id='search-box-text-field' type="text" name="barcode" placeholder="Barcode...">
+        <span class="input-group-btn">
+            <button type="submit" class="btn btn-default"><i class="glyphicon glyphicon-search"></i></button>
+        </span>
     </form>
-    <h1><a href="{% url 'root' %}">Robox</a></h1>
-    <a href="{% url 'index' %}">Index</a>
-    <a href="{% url 'upload' %}">Upload</a>
-    <a href="{% url 'docs_index' %}">Documentation</a>
 </div>
-<div class="heading">
-    <h2>{% block heading %}{% endblock %}</h2>
-</div>
-<div class="content">
+<div class="content row">
     {% block content %}
     {% endblock %}
 </div>
-<div class="footer">
-    <p>&copy; Sanger Institute 2016</p>
+<div class="footer row">
+    <span>&copy; Sanger Institute 2016</span>
+    <span class="version">v. 0.1</span>
 </div>
 </body>
 </html>
