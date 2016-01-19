@@ -3,7 +3,7 @@ import os
 import mock
 from django.core.urlresolvers import reverse
 from django.db import IntegrityError, DatabaseError
-from django.test import TransactionTestCase, LiveServerTestCase
+from django.test import TransactionTestCase, LiveServerTestCase, TestCase
 from selenium import webdriver
 
 from mainsite import settings, environment
@@ -117,8 +117,7 @@ class UploadTestSuccess(LiveServerTestCase):
                 headers[0].find_element_by_class_name('file-name').text)
 
         contents = self.driver.find_element_by_class_name("file-content")
-        self.assertGreater(len(contents.find_elements_by_tag_name("tr")),
-                           1)
+        self.assertGreater(len(contents.find_elements_by_tag_name("tr")), 1)
 
     def tearDown(self):
         self.driver.quit()
@@ -155,3 +154,23 @@ class UploadTestInvalidBarcode(LiveServerTestCase):
 
     def tearDown(self):
         self.driver.quit()
+
+
+class DownloadFile(TestCase):
+    def setUp(self):
+        with open(os.path.join(settings.BASE_DIR,
+                               "robox/tests/testFiles/Caliper1_411359_PATH_1_3_2015-08-18_01-24-42_WellTable.csv"),
+                  'rb') as f:
+            self.file_data = f.read()
+            self.file = DataFile.objects.create(barcode="fake_barcode",
+                                                binary_file=BinaryFile.objects.create(data=self.file_data, name=str(f)))
+
+    def test_download_returns_ok(self):
+        url = reverse('download', args=[self.file.pk])
+        response = self.client.get(url)
+        self.assertEqual(200, response.status_code)
+
+    def test_file_contents(self):
+        url = reverse('download', args=[self.file.pk])
+        response = self.client.get(url)
+        self.assertEqual(self.file_data, response.content)
