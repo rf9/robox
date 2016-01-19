@@ -36,7 +36,8 @@
             {% for file in files|dictsortreversed:"upload_time" %}
                 <div class="file {% if file.recent %}recent{% endif %}">
                     <div class="file-header ">
-                        <h4>File: <a href="{% url 'download' file.binary_file.pk %}">{{ file.binary_file.name }}</a>
+                        <h4 class="file-name">File: <a
+                                href="{% url 'download' file.binary_file.pk %}">{{ file.binary_file.name }}</a>
                         </h4>
                         <h5>Format: {% if file.format != "None" %}{{ file.format }}{% else %}
                             <span class="warning">Unrecognised</span>{% endif %}</h5>

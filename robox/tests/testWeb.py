@@ -114,7 +114,7 @@ class UploadTestSuccess(LiveServerTestCase):
         headers = self.driver.find_elements_by_class_name("file-header")
         self.assertEqual(
                 "File: Caliper1_411359_PATH_1_3_2015-08-18_01-24-42_WellTable.csv",
-                headers[0].find_element_by_tag_name('h3').text)
+                headers[0].find_element_by_class_name('file-name').text)
 
         contents = self.driver.find_element_by_class_name("file-content")
         self.assertGreater(len(contents.find_elements_by_tag_name("tr")),
