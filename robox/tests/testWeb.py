@@ -1,9 +1,9 @@
 import os
 
+import mock
 from django.core.urlresolvers import reverse
 from django.db import IntegrityError, DatabaseError
 from django.test import TransactionTestCase, LiveServerTestCase
-import mock
 from selenium import webdriver
 
 from mainsite import settings, environment
@@ -104,15 +104,17 @@ class UploadTestSuccess(LiveServerTestCase):
         self.driver.find_element_by_link_text("Upload").click()
 
         self.driver.find_element_by_id("id_barcode").send_keys(self.barcode)
-        self.driver.find_element_by_id("id_file").send_keys(os.path.join(settings.BASE_DIR,
-                                                                         "robox/tests/testFiles/Caliper1_411359_PATH_1_3_2015-08-18_01-24-42_WellTable.csv"))
+        self.driver.find_element_by_id("id_file").send_keys(
+                os.path.join(settings.BASE_DIR,
+                             "robox/tests/testFiles/Caliper1_411359_PATH_1_3_2015-08-18_01-24-42_WellTable.csv")
+        )
 
         self.driver.find_element_by_id('id_barcode').submit()
 
         headers = self.driver.find_elements_by_class_name("file-header")
         self.assertEqual(
-            "File: Caliper1_411359_PATH_1_3_2015-08-18_01-24-42_WellTable.csv",
-            headers[0].find_element_by_tag_name('h3').text)
+                "File: Caliper1_411359_PATH_1_3_2015-08-18_01-24-42_WellTable.csv",
+                headers[0].find_element_by_tag_name('h3').text)
 
         contents = self.driver.find_element_by_class_name("file-content")
         self.assertGreater(len(contents.find_elements_by_tag_name("tr")),
@@ -127,21 +129,26 @@ class UploadTestSuccess(LiveServerTestCase):
 
 
 class UploadTestInvalidBarcode(LiveServerTestCase):
-    barcode = "fake_barcode"
+    barcode = "0123456789123"
 
     def setUp(self):
         self.driver = webdriver.Chrome(environment.CHROME_DRIVER)
         self.driver.get(self.live_server_url)
 
-    def test_file_was_uploaded_and_parsed(self):
         self.driver.find_element_by_link_text("Upload").click()
+        self.upload_url = self.driver.current_url
 
         self.driver.find_element_by_id("id_barcode").send_keys(self.barcode)
-        self.driver.find_element_by_id("id_file").send_keys(os.path.join(settings.BASE_DIR,
-                                                                         "robox/tests/testFiles/Caliper1_411359_PATH_1_3_2015-08-18_01-24-42_WellTable.csv"))
-
+        self.driver.find_element_by_id("id_file").send_keys(
+                os.path.join(settings.BASE_DIR,
+                             "robox/tests/testFiles/Caliper1_411359_PATH_1_3_2015-08-18_01-24-42_WellTable.csv")
+        )
         self.driver.find_element_by_id('id_barcode').submit()
 
+    def test_still_on_upload_page(self):
+        self.assertEqual(self.upload_url, self.driver.current_url)
+
+    def test_file_upload_caused_error(self):
         errors = self.driver.find_elements_by_class_name("errorlist")
         self.assertEqual(1, len(errors))
         self.assertEqual("Invalid barcode", errors[0].find_element_by_tag_name('li').text)

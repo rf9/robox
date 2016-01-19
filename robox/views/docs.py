@@ -10,10 +10,14 @@ def index(request):
 
 
 def api(request):
-    return render(request, "robox/docs/markdown.html", {'title': 'API docs', 'markdown_content': "\n".join(
-        open(os.path.join(settings.BASE_DIR, "robox/static/robox/docs/md/api.md")))})
+    return render(request, "robox/docs/markdown.html", {
+        'title': 'API docs',
+        'markdown_content': "\n".join(open(os.path.join(settings.BASE_DIR, "robox/static/robox/docs/md/api.md")))
+    })
 
 
 def parsers(request):
-    return render(request, "robox/docs/markdown.html", {'title': 'Parser docs', 'markdown_content': "\n".join(
-        open(os.path.join(settings.BASE_DIR, "robox/static/robox/docs/md/parsers.md")))})
+    return render(request, "robox/docs/markdown.html", {
+        'title': 'Parser docs',
+        'markdown_content': "\n".join(open(os.path.join(settings.BASE_DIR, "robox/static/robox/docs/md/parsers.md")))
+    })

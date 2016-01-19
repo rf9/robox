@@ -2,12 +2,13 @@ import logging
 
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse, reverse_lazy
-from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.http import HttpResponseRedirect, HttpResponse
+from django.shortcuts import render, get_object_or_404
+from django.utils.encoding import smart_str
 from django.views.generic import FormView, DeleteView
 
 from robox.forms import UploadForm
-from robox.models import DataFile
+from robox.models import DataFile, BinaryFile
 from robox.utils import upload_files, validate_barcode
 
 _logger = logging.getLogger(__name__)
@@ -62,3 +63,13 @@ def upload_by_barcode(request, barcode):
 class FileDelete(DeleteView):
     model = DataFile
     success_url = reverse_lazy('index')
+
+
+def download_file(request, pk):
+    file = get_object_or_404(BinaryFile, pk=pk)
+
+    response = HttpResponse(content_type='application/force-download')
+    response['Content-Disposition'] = 'attachment; filename=%s' % smart_str(file.name)
+    response.write(file.data)
+
+    return response

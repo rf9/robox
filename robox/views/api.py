@@ -1,20 +1,13 @@
-from http import client
 import logging
+from http import client
 
 from django.core.exceptions import ValidationError
-
 from django.db.models import Q
-
 from django.db.transaction import atomic
-
 from rest_framework import serializers
-
 from rest_framework.mixins import ListModelMixin, CreateModelMixin
-
 from rest_framework.pagination import LimitOffsetPagination
-
 from rest_framework.response import Response
-
 from rest_framework.viewsets import GenericViewSet
 
 from robox.models import DataFile
@@ -41,9 +34,7 @@ class StandardPaginationClass(LimitOffsetPagination):
     max_limit = 100
 
 
-class FileViewSet(ListModelMixin,
-                  CreateModelMixin,
-                  GenericViewSet):
+class FileViewSet(ListModelMixin, CreateModelMixin, GenericViewSet):
     serializer_class = FileSerializer
     pagination_class = StandardPaginationClass
 
@@ -76,5 +67,4 @@ class FileViewSet(ListModelMixin,
             return Response({"results": [FileSerializer(database_file).data for database_file in database_files]},
                             status=client.CREATED)
         except ValidationError:
-            return Response({'error': 'Invalid barcode', 'barcode': barcode},
-                            status=client.UNPROCESSABLE_ENTITY)
+            return Response({'error': 'Invalid barcode', 'barcode': barcode}, status=client.UNPROCESSABLE_ENTITY)

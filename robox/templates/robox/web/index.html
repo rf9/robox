@@ -20,7 +20,7 @@
             <tr>
                 <td>{{ file.barcode }}</td>
                 <td>{{ file.binary_file.name }}</td>
-                <td>{{ file.upload_time }}</td>
+                <td>{{ file.upload_time|date:'Y-m-d H:i:s' }}</td>
                 <td><input type="button" onclick="location.href='{% url "view" file.barcode %}'" value="Show"/></td>
             </tr>
         {% endfor %}
