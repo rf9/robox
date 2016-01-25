@@ -1,3 +1,6 @@
+html {
+    overflow-y: scroll;
+}
 html, body {
     height: 100%;
 }
@@ -6,10 +9,8 @@ html, body {
     margin: 0;
     color: white;
 }
-.nav-bar a {
-	color: white;
-}
 
+.nav-bar a,
 .nav-bar a:hover {
     color: white;
 }

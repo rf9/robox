@@ -1,9 +1,9 @@
 pika
 selenium
-markdown
 mock
 openpyxl
 Django
 django-extensions
 six
 djangorestframework
+django-markdown-deux

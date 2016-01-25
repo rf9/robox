@@ -10,6 +10,6 @@
 {% endblock %}
 {% block content %}
     <h3>{{ title }}:</h3>
-    {% load markdown_filter %}
-    {{ markdown_content|markdownify|safe }}
+    {% load markdown_deux_tags %}
+    {{ markdown_content|markdown }}
 {% endblock %}

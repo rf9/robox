@@ -13,7 +13,30 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 
-from mainsite import environment
+import sys
+
+try:
+    from mainsite import environment
+except ImportError:
+    print("""
+Requires an environment.py module (not included in source control).
+
+example:
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+SECRET_KEY = 'C]tSblpXGmeMEV"=+zJ"}QBMjS/2?_0UKRjp{Rgbt/Clk6t{gj'
+DEBUG = True
+# Set to empty string to skip webdriver tests.
+CHROME_DRIVER = "/path/to/bin/chromedriver"
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
+""", file=sys.stderr)
+    exit(1)
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -37,6 +60,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'markdown_deux',
     'robox',
 )
 

@@ -1,4 +1,5 @@
 import os
+from unittest import skipIf
 
 import mock
 from django.core.urlresolvers import reverse
@@ -85,6 +86,7 @@ class FileParseTestSuccess(TransactionTestCase):
         self.file.delete()
 
 
+@skipIf(not environment.CHROME_DRIVER, "Webdriver setting not set. Skipping.")
 class UploadTestSuccess(LiveServerTestCase):
     barcode = "0000000000000"
 
@@ -127,6 +129,7 @@ class UploadTestSuccess(LiveServerTestCase):
             file.delete()
 
 
+@skipIf(not environment.CHROME_DRIVER, "Webdriver setting not set. Skipping.")
 class UploadTestInvalidBarcode(LiveServerTestCase):
     barcode = "0123456789123"
 
