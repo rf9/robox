@@ -153,7 +153,7 @@ class UploadTestInvalidBarcode(LiveServerTestCase):
     def test_file_upload_caused_error(self):
         errors = self.driver.find_elements_by_class_name("errorlist")
         self.assertEqual(1, len(errors))
-        self.assertEqual("Invalid barcode", errors[0].find_element_by_tag_name('li').text)
+        self.assertEqual("Invalid EAN13 barcode", errors[0].find_element_by_tag_name('li').text)
 
     def tearDown(self):
         self.driver.quit()

@@ -19,6 +19,7 @@
     display: block;
 }
 .file {
+    padding: 1px;
     transition: background-color 2s;
 }
 .recent {
@@ -26,11 +27,5 @@
 }
 .upload {
     padding: 5px 5px 5px 15px;
-}
-
-.upload label input {
-    display: inline;
-}
-.warning {
-    color: red;
+    background: white;
 }

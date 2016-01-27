@@ -7,22 +7,27 @@
 {% endblock %}
 {% block content %}
     <h3>Upload:</h3>
-    <form action="{% url "upload" %}" method="post" enctype="multipart/form-data">
+    <form class="form-horizontal" action="{% url "upload" %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        <div>
-            {{ form.barcode.errors }}
-            {{ form.barcode.label }}: {{ form.barcode }}
+        {{ form.barcode.errors }}
+        <div class="form-group">
+            <label class="col-sm-1 control-label" for="id_barcode">Barcode</label>
+            <div class="col-sm-3">
+                <input id="id_barcode" name="barcode" class="form-control" placeholder="Barcode"
+                       value="{% if form.barcode.value %}{{ form.barcode.value }}{% endif %}">
+            </div>
         </div>
-        <div>
-            {{ form.file.errors }}
-            <label>
-                <span>Files:</span>
+        {{ form.file.errors }}
+        <div class="form-group">
+            <label class="col-sm-1 control-label" for="id_file">Files</label>
+            <div class="col-sm-3">
                 <input id="id_file" name="file" type="file" multiple>
-            </label>
+            </div>
         </div>
+        <div class="col-sm-1"></div>
         <div>
-            <input type="submit" value="Submit" class="btn btn-default btn-sm"/>
-            <a href="{% url "index" %}" class="btn btn-default btn-sm">back</a>
+            <input type="submit" value="Submit" class="btn btn-primary"/>
+            <a href="{% url "index" %}" class="btn btn-default">Back</a>
         </div>
     </form>
 {% endblock %}
